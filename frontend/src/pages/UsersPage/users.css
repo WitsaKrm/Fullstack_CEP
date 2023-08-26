@@ -1,0 +1,59 @@
+
+.table {
+  padding: 10px;
+}
+.row {
+  padding: 0;
+}
+th {
+  text-align: center;
+}
+.title {
+  color: #000000;
+  margin-top: 16px;
+}
+.col.wrapper {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 0;
+}
+.add_users{
+    color: rgb(62, 94, 201);
+    margin-right: 4px;
+    margin-top: 8px;
+
+    cursor: pointer;
+}
+.exp_xcel{
+    color: rgb(52, 117, 35);
+    margin-right: 40px;
+    margin-top: 8px;
+    cursor: pointer;
+
+}
+.edit{
+    color: rgb(52, 117, 35);
+    margin-right: 4px;
+    cursor: pointer;
+
+}
+.delete{
+    color: rgb(179, 17, 17);
+    margin-right: 4px;
+    cursor: pointer;
+
+}
+.status {
+    font-size: 50px;
+    margin: 2px 2px 0 0;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 10px;
+}
+.text-danger {
+    color: #ff5b5b;
+}
+.text-success {
+    color: #10c469;
+}

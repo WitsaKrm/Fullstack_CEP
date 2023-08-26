@@ -1,0 +1,50 @@
+.ss {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 24px;
+}
+
+.ss-name {
+  font-size: medium;
+}
+
+.data {
+  font-size: larger;
+  color: #2e572a;
+}
+
+.ss-img {
+  
+  margin: 16px 16px 16px 16px;
+  height: 60px;
+  width: 60px;
+}
+.ss-value{
+  font-size: 32px;
+}
+.updateTime {
+  font-size: 12px;
+
+}
+
+.ss-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 16px 0 32px 0;
+  padding: 16px 8px 0;
+  width: 300px;
+  height: 200px;
+  border-radius: 10px;
+  border: none;
+  background-color: #dadada;
+  color: #000000;
+  transition: background-color 0.3s, color 0.3s; /* Add smooth transition effect */
+}
+
+.ss-container:hover {
+  background-color: #9e9e9e;
+  color: white;
+}

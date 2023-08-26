@@ -1,0 +1,20 @@
+.header-container{
+    background-color: #2e572a;
+    margin-bottom: 24px;
+  }
+    .header {
+      margin: 0px;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header a{
+      color: aliceblue;
+      font-size: 20px;
+      text-decoration: none;
+    }
+    .nav-link a{
+      margin: 0px 8px;
+    }
+  
