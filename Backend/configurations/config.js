@@ -12,8 +12,8 @@ const config = {
       MIN_POOL: 0,
       IDLE: 10000,
       Port: 3306,
-      // database: 'dev_pj',
-      database: 'cep',
+      database: 'dev_pj',
+      // database: 'cep',
       logging: false,
     },
   };

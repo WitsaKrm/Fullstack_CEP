@@ -12,7 +12,7 @@ const nodeRoutes = (app) => {
   app.get('/nodes', controllers.nodes.getNodes);
   app.get('/station', controllers.nodes.getStation);
   app.get('/senser/:nodeId', controllers.nodes.getSenser);
-  app.get('/chart_ss/:nodeId', controllers.nodes.getAllSenserData);
+  app.get('/chart_ss/:nodeId', controllers.nodes.getAllSenserChartData);
 };
 
 module.exports = {
