@@ -10,7 +10,7 @@ import Modal from "@mui/material/Modal";
 import "./users.css";
 import PopAddUser from "../../components/addusers/addusers";
 
-import APIdataUsers from "../../services/API/data.users";
+import APIdataUsers from "../../services/API/user.api";
 import AppHeader from "../../components/header/app-header";
 const USERS_URL = "/users";
 
