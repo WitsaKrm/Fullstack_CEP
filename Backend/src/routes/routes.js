@@ -13,6 +13,7 @@ const nodeRoutes = (app) => {
   app.get('/station', controllers.nodes.getStation);
   app.get('/senser/:nodeId', controllers.nodes.getSenser);
   app.get('/chart_ss/:nodeId', controllers.nodes.getAllSenserChartData);
+  app.get('/chart_ss/:nodeId/:data', controllers.nodes.getChartData);
 };
 
 module.exports = {

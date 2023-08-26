@@ -2,52 +2,46 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import SenSersBox from "../../components/sensers/sensers";
 import "./senserPage.css";
-import AppHeader from "../../components/header/app-header";
 import svg from "../../assets/svg/svg";
+import AppHeader from "../../components/header/app-header";
+import { FetchSensers, FetchChart,FetchOneChart } from "../../services/API/node.api";
 import Chart from "../../components/chart/chart";
 
-import endpoint from "../../services/API/axios";
 const SS_URL = "/senser";
-const CHART_SS_URL = "/chart_ss"
+const CHART_SS_URL = "/chart_ss";
 
 const SensersPage = () => {
   const { nodeId } = useParams();
-  const [senser, setSenser] = useState([]);
-  const [chartSenser, setChartSenser] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // Add loading state
-  const [selectedSensor, setSelectedSensor] = useState(null); // Track selected sensor
+  const [sensers, setSensers] = useState([]);
+  const [chartSensers, setChartSensers] = useState([]);
+  const [oneChart, setOneChart] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedSensor, setSelectedSensor] = useState();
 
   useEffect(() => {
-    const fetchSensers = async () => {
+    async function fetchData() {
       try {
-        const res = await endpoint.get(`${SS_URL}/${nodeId}`);
-        console.log(res.data.senser);
-        setSenser(res.data.senser || []);
+        await FetchSensers(setSensers, SS_URL, `${nodeId}`);
+        await FetchChart(setChartSensers, CHART_SS_URL, `${nodeId}`);
+        // await FetchOneChart(setOneChart, CHART_SS_URL,"air_temp",`${nodeId}`);
         setIsLoading(false);
       } catch (error) {
-        console.error("Failed to fetch senser:", error);
+        console.error("Error fetching data:", error);
         setIsLoading(false);
       }
-    };
-    const fetchDataSensers = async () => {
-      try {
-        const res = await endpoint.get(`${CHART_SS_URL}/${nodeId}`);
-        console.log(`${CHART_SS_URL}/${nodeId}`);
-        console.log(res.data.chart);
-        setChartSenser(res.data.chart || []);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Failed to fetch senser:", error);
-        setIsLoading(false);
-      }
-    };
-    fetchSensers()
-    fetchDataSensers()
+    }
+    fetchData();
   }, [nodeId]);
 
   if (isLoading) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
+
+  const handleSenserClick = (sensorKey) => {
+    FetchOneChart(setOneChart, CHART_SS_URL,`${sensorKey}`,`${nodeId}`);
+    setSelectedSensor(sensorKey);
+    console.log(sensorKey);
+  };
 
   const mockData = [
     {
@@ -55,65 +49,67 @@ const SensersPage = () => {
       nameEN: "Temperature",
       svg: svg.air_temp.default,
       key: "air_temp",
-      dateKey: "date",
-      unit: "°C"
+      date: "date",
+      time: "time",
+      unit: "°C",
     },
     {
       nameTH: "ความชื้นอากาศ",
       nameEN: "Air Humidity",
       svg: svg.air_humi.default,
       key: "air_humi",
-      dateKey: "date",
-      unit: "%"
+      date: "date",
+      time: "time",
+      unit: "%",
     },
     {
       nameTH: "ความชื้นในดิน",
       nameEN: "Soil Moisture",
       svg: svg.soil_mois.default,
-      key: "soil_mois", 
-      dateKey: "date",
-      unit: "%"
+      key: "soil_mois",
+      date: "date",
+      time: "time",
+      unit: "%",
     },
     {
       nameTH: "ค่าแสง",
       nameEN: "Light",
       svg: svg.light.default,
       key: "light",
-      dateKey: "date",
-      unit: "lux"
-    }
+      date: "date",
+      time: "time",
+      unit: "lux",
+    },
   ];
-  const handleSenserClick = (sensorKey) => {
-    setSelectedSensor(sensorKey);
-    console.log(sensorKey);
-  };
+
   return (
-<>
-<AppHeader />
-<div className="row">
-  {mockData.map((data, index) => (
-    <div className="ss col-md-3" key={index}>
-      <SenSersBox
-        key={index}
-        nameEN={data.nameEN}
-        nameTH={data.nameTH}
-        src={data.svg}
-        values={senser.map(sensor => sensor[data.key])}
-        date={new Date(senser[0][data.dateKey]).toLocaleString()}
-        unit={data.unit}
-        handleSenserClick={() => handleSenserClick(data.key)}
-        />
-    </div>
-  ))}
-</div>
-<div className="chart-container">
-  {selectedSensor && (
-    <Chart data={chartSenser} sensorKey={selectedSensor} />
-  )}
-</div>
-</>
-);
+    <>
+      <AppHeader nameHeader={`NODE Sensers`} />
+      <div className="row">
+        {mockData.map((data, index) => (
+          <div className="senser col-md-3" key={index}>
+            <SenSersBox
+              nameEN={data.nameEN}
+              nameTH={data.nameTH}
+              src={data.svg}
+              values={sensers.map((value) => value[data.key])}
+              date={sensers.map((date) => date[data.date])}
+              time={sensers.map((time) => time[data.time])}
+              unit={data.unit}
+              handleSenserClick={() => handleSenserClick(data.key)}
+            />
+          </div>
+        ))}
+      </div>
+      <div className="chart-container">
+        {selectedSensor ?
+          <Chart data={oneChart} sensorKey={selectedSensor} />
+         : 
+          <Chart data={chartSensers} sensorKey={selectedSensor} />
+        }
+      </div>
+    </>
+  );
 };
 
 export default SensersPage;
-

@@ -35,6 +35,10 @@ const Chart = ({ data }) => {
           <stop offset="5%" stopColor="blue" stopOpacity={0.8} />
           <stop offset="95%" stopColor="blue" stopOpacity={0} />
         </linearGradient>
+        <linearGradient id="mois" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="5%" stopColor="red" stopOpacity={0.8} />
+          <stop offset="95%" stopColor="red" stopOpacity={0} />
+        </linearGradient>
         <linearGradient id="light" x1="0" y1="0" x2="0" y2="1">
           <stop offset="5%" stopColor="#FFCC00" stopOpacity={0.8} />
           <stop offset="90%" stopColor="#FFCC00" stopOpacity={0} />
@@ -57,6 +61,13 @@ const Chart = ({ data }) => {
         stroke="#6633FF"
         fillOpacity={1}
         fill="url(humi)"
+      />
+      <Area
+        type="monotone"
+        dataKey="soil_mois"
+        stroke="red"
+        fillOpacity={1}
+        fill="url(mois)"
       />
       <Area
         type="monotone"
