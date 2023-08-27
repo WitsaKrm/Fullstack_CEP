@@ -8,9 +8,9 @@ const getNodes = async (req, res) => {
   console.log("getNodes");
   let sql = `SELECT * FROM ${TB_N}`;
   DB.query(sql, { type: DB.QueryTypes.SELECT })
-  
+
     .then((results) => {
-      console.log("nodes : ",results); // This logs the query results
+      console.log("nodes : ", results); // This logs the query results
       res.json({ status: "Success", nodes: results });
     })
     .catch((err) => {
@@ -22,7 +22,7 @@ const getStation = async (req, res) => {
   let sql = `SELECT * FROM ${TB_STT}`;
   DB.query(sql, { type: DB.QueryTypes.SELECT })
     .then((results) => {
-      console.log("stations : ",results); // This logs the query results
+      console.log("stations : ", results); // This logs the query results
       res.json({ status: "Success", stations: results });
     })
     .catch((err) => {
@@ -30,7 +30,6 @@ const getStation = async (req, res) => {
       res.json({ status: "Error", message: err });
     });
 };
-
 
 const getSenser = async (req, res) => {
   const nodeId = req.params.nodeId;
@@ -46,7 +45,7 @@ const getSenser = async (req, res) => {
     });
 };
 const getAllSenserChartData = async (req, res) => {
-  console.log("getAllSenserData",req.params.nodeId);
+  console.log("getAllSenserData", req.params.nodeId);
   const nodeId = req.params.nodeId;
   const data = req.params.data;
   let sql = `SELECT * FROM ${TB_SS} WHERE node_id = ${nodeId}`;
@@ -58,25 +57,23 @@ const getAllSenserChartData = async (req, res) => {
     .catch((err) => {
       res.json({ status: "Error", message: err });
     });
-
 };
 const getChartData = async (req, res) => {
-  console.log("getAllSenserData",req.params.nodeId);
+  console.log("getAllSenserData", req.params.nodeId);
   const nodeId = req.params.nodeId;
   const data = req.params.data;
-  let sql = `SELECT ${data} FROM ${TB_SS} WHERE node_id = ${nodeId} `;
+  let sql = `SELECT ${data}, date, time FROM ${TB_SS} WHERE node_id = ${nodeId} `;
   console.log(sql);
 
   DB.query(sql, { type: DB.QueryTypes.SELECT })
     .then((results) => {
-      console.log("oneChart : ",results); // This logs the query results
+      console.log("oneChart : ", results); // This logs the query results
 
       res.json({ status: "Success", oneChart: results });
     })
     .catch((err) => {
       res.json({ status: "Error", message: err });
     });
-
 };
 
 module.exports = {
@@ -84,5 +81,5 @@ module.exports = {
   getStation,
   getSenser,
   getAllSenserChartData,
-  getChartData
+  getChartData,
 };
