@@ -84,11 +84,12 @@ const SensersPage = () => {
 
   return (
     <>
-      <AppHeader nameHeader={`NODE Sensers`} />
+    <AppHeader nameHeader={`NODE Sensers`} />
+    <div className="container">
       <div className="row">
         {mockData.map((data, index) => (
-          <div className="senser col-md-3" key={index}>
-            <SenSersBox
+          <div className="col-lg-3 col-md-3 col-sm-6" key={index}>
+              <SenSersBox
               nameEN={data.nameEN}
               nameTH={data.nameTH}
               src={data.svg}
@@ -102,14 +103,15 @@ const SensersPage = () => {
         ))}
       </div>
       <div className="chart-container">
-        {selectedSensor ?
-          <Chart data={oneChart} sensorKey={selectedSensor} />
-         : 
-          <Chart data={chartSensers} sensorKey={selectedSensor} />
-        }
+        {selectedSensor ? (
+          <Chart data={oneChart} senserKey={selectedSensor} />
+        ) : (
+          <Chart data={chartSensers} senserKey={selectedSensor} />
+        )}
       </div>
-    </>
-  );
+    </div>
+  </>
+);
 };
 
 export default SensersPage;
