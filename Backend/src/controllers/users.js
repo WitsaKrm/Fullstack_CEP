@@ -7,7 +7,6 @@ const getUsers = async (req, res) => {
     console.log("getUsers");
       let data = req.query;
       let sql = `SELECT * FROM ${TB}`;
-    
       DB
         .query(sql, { type: DB.QueryTypes.SELECT })
         .then((results) => {
