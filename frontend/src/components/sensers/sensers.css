@@ -33,15 +33,15 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 16px 0 32px 0;
-  padding: 16px 8px 0;
-  width: 300px;
+  margin: 0px 0 16px 0;
+  padding: 24px 8px;
+  width: 170px;
   height: 200px;
   border-radius: 10px;
   border: none;
   background-color: #dadada;
   color: #000000;
-  transition: background-color 0.3s, color 0.3s; /* Add smooth transition effect */
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .ss-container:hover {
