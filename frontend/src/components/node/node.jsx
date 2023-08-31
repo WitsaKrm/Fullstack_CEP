@@ -5,22 +5,24 @@ import "./node.css";
 const Node = (props) => {
   const { name, status, src, handleNodeClick } = props;
   const statusClass = status === "1" ? "online" : "offline";
+
   return (
-    <button className="node-container" onClick={handleNodeClick}>
+    <div className="node-container" onClick={handleNodeClick}>
       <div className="node">
-        <div>
+        <div className="node-img-container">
           <img className="node-img" src={src} alt="Node Icon" />
         </div>
-        <div className="status-node">
-          <span>{name}</span>
-          <br />
-          <div className={statusClass}>
-            <p>{status === "1" ? "Online" : "Offline"}</p>
+        <div className="node-details">
+          <div className="details">
+            <span>{name}</span>
+            <div className={`status-node ${statusClass}`}>
+              <span>{status === "1" ? "Online" : "Offline"}</span>
+            </div>
           </div>
+          <div className="owner">{/* Add owner content here */}</div>
         </div>
-        <div className="owner">{/* Add owner content here */}</div>
       </div>
-    </button>
+    </div>
   );
 };
 
