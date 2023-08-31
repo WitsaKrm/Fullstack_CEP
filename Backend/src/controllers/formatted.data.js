@@ -11,7 +11,7 @@ const fomattdDate = async (req, res) => {
     const month = (dateInGMTPlus7.getUTCMonth() + 1).toString().padStart(2, '0'); // Months are zero-indexed
     const year = dateInGMTPlus7.getUTCFullYear();
     // Construct the formatted date string
-    const formattedDate = `${year}:${month}:${day}`;
+    const formattedDate = `${year}/${month}/${day}`;
 
     console.log(formattedDate);
     return formattedDate;

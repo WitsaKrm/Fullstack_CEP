@@ -1,7 +1,7 @@
 
 import API from "../../services/API/axios";
 
-export function FetchNodes(SET,URL,ID) {
+export function FetchDevices(SET,URL,ID) {
     const fetchNodes = async () => {
         try {
           const res = await API.get(URL);
@@ -13,18 +13,20 @@ export function FetchNodes(SET,URL,ID) {
       };
       fetchNodes()
 }
-
-export function FetchStations(SET,URL,ID) {
-    const fetchStations = async () => {
+export function FetchDevicesById(SET,URL,ID) {
+    const fetchNodes = async () => {
         try {
           const res = await API.get(URL);
-          SET(res.data.stations);
+          console.log(res.data);
+          console.log(res.data.devices);
+          SET(res.data.devices);
         } catch (error) {
-          console.error("Failed to fetch stations:", error);
+          console.error("Failed to fetch nodes:", error);
         }
-      }; 
-      fetchStations()  
+      };
+      fetchNodes()
 }
+
 
 export function FetchSensers (SET,URL,ID) {
     const fetchSensers = async () => {

@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 
 import endpoint from "../../services/API/axios";
 import AddUsers from "../../components/addusers/addusers";
-const LOGIN_URL = "/API/login";
+const LOGIN_URL = "/login";
 
 const LoginPage = () => {
   const history = useHistory();

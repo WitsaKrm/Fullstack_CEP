@@ -9,9 +9,9 @@ const userRoutes = (app) => {
 };
 
 const nodeRoutes = (app) => {
-  app.get('/nodes', controllers.nodes.getNodes);
+  app.get('/devices', controllers.nodes.getDevices);
   app.post('/nodes', controllers.nodes.postDataNode);
-  app.get('/station', controllers.nodes.getStation);
+  // app.get('/station', controllers.nodes.getStation);
   app.get('/senser/:nodeId', controllers.nodes.getSenser);
   app.get('/chart_ss/:nodeId', controllers.nodes.getAllSenserChartData);
   app.get('/chart_ss/:nodeId/:data', controllers.nodes.getChartData);
