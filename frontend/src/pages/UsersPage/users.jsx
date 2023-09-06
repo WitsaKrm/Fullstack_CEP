@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Modal from "@mui/material/Modal";
-import "./users.css";
+import style from "./users.module.css";
 import PopAddUser from "../../components/addusers/addusers";
 
 import APIdataUsers from "../../services/API/user.api";
@@ -52,14 +52,14 @@ const UsersPage = () => {
     <>
       <AppHeader />
 
-      <div className="title">
+      <div className={style.title}>
         <div className="row">
           <h2 className="col">
             Users <b>Management</b>
           </h2>
-          <div className="col wrapper">
+          <div className={style.col .wrapper}>
             <i
-              className="add_users"
+              className={style.add_users}
               title="ADD USERS"
               data-toggle="tooltip"
               onClick={handleOpen}
@@ -67,7 +67,7 @@ const UsersPage = () => {
               <i className="material-icons">add_circle</i>
             </i>
             <i
-              className="exp_xcel"
+              className={style.exp_xcel}
               title="Export to Excel"
               data-toggle="tooltip"
             >
@@ -76,7 +76,7 @@ const UsersPage = () => {
           </div>
         </div>
       </div>
-      <div className="table">
+      <div className={style.table}>
         <TableContainer>
           <Table aria-label="customized table">
             <TableHead>
@@ -118,9 +118,9 @@ const UsersPage = () => {
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {users.status === 1 ? (
-                        <span className="status text-success">&#8226;</span>
+                        <span className={style.status .textsuccess}>&#8226;</span>
                       ) : (
-                        <span className="status text-danger">&#8226;</span>
+                        <span className={style.status .textdanger}>&#8226;</span>
                       )}
                     </StyledTableCell>
 
@@ -129,14 +129,14 @@ const UsersPage = () => {
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       <i
-                        className="edit"
+                        className={style.edit}
                         title="Edit Users"
                         data-toggle="tooltip"
                       >
                         <i className="material-icons">edit</i>
                       </i>
                       <i
-                        className="delete"
+                        className={style.delete}
                         title="Delete Users"
                         data-toggle="tooltip"
                       >
@@ -151,7 +151,7 @@ const UsersPage = () => {
         </TableContainer>
       </div>
       <Modal open={open} onClose={handleClose}>
-        <div className="modal">
+        <div className={style.modal}>
           <PopAddUser /> {/* Render the PopAddUser component here */}
           {/* <h2>Add User</h2> Remove or move this line */}
         </div>
