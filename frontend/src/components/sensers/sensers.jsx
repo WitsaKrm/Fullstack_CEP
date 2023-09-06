@@ -17,7 +17,7 @@ import style from "./sensers.module.css";
           </div>
           <div className={style.datass}>
             <div className={style.data}>
-              <h1 className={style.ss-value}>
+              <h1 className={style.ssvalue}>
                 {props.values} {props.unit}
               </h1>
             </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import NodeBox from "../../components/node/node";
-import style from "./indexPage.moddule.css";
+import style from "./indexPage.module.css";
 import AppHeader from "../../components/header/app-header";
 import { FetchDevicesById } from "../../services/API/node.api";
 import svg from "../../assets/svg/svg"; // Import SVG icons properly based on your file structure
@@ -60,7 +60,7 @@ const IndexPage = () => {
                         handleNodeClick(
                           station.userId,
                           "station",
-                          station.station_id
+                          station.d_id
                         )
                       }
                     />
@@ -88,7 +88,7 @@ const IndexPage = () => {
                         handleNodeClick(
                           node.userId,
                           node.type === "station" ? "station" : "senser",
-                          node.node_id
+                          node.d_id
                         )
                       }
                     />
