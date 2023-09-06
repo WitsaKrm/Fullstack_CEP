@@ -68,6 +68,7 @@
   }
   
   .loginBtt {
+    margin-top: 3px;
     padding: 8px 16px;
     background-color: #2e572a;
     color: #fff;

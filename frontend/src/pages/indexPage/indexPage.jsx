@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import NodeBox from "../../components/node/node";
-import "./indexPage.css";
+import style from "./indexPage.moddule.css";
 import AppHeader from "../../components/header/app-header";
 import { FetchDevicesById } from "../../services/API/node.api";
 import svg from "../../assets/svg/svg"; // Import SVG icons properly based on your file structure

@@ -1,30 +1,30 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./sensers.css";
+import style from "./sensers.module.css";
 
   const SenSers = (props) => {
   
     return (
-      <button className="ss-container" onClick={props.handleSenserClick}>
-        <div className="ss-name">
+      <button className={style.sscontainer} onClick={props.handleSenserClick}>
+        <div className={style.ssname}>
           <span>{props.nameEN}</span>
           <br />
           <span>{props.nameTH}</span>
         </div>
-        <div className="ss">
-          <div className="ss-img-container">
-            <img className="ss-img" src={props.src} alt="Sensor Icon" />
+        <div className={style.ss}>
+          <div className={style.ssimgcontainer}>
+            <img className={style.ssimg} src={props.src} alt="Sensor Icon" />
           </div>
-          <div className="data-ss">
-            <div className="data">
-              <h1 className="ss-value">
+          <div className={style.datass}>
+            <div className={style.data}>
+              <h1 className={style.ss-value}>
                 {props.values} {props.unit}
               </h1>
             </div>
           </div>
         </div>
-        <div className="updateTime">
-          <p className="update-time-text">อัพเดตเมื่อ: {props.date} , {props.time}</p>
+        <div className={style.updateTime}>
+          <p className={style.updatetimetext}>อัพเดตเมื่อ: {props.date} , {props.time}</p>
         </div>
       </button>
     );

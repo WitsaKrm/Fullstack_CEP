@@ -43,24 +43,23 @@ select {
 select option {
   padding: 5px;
 }
-.select-role{
+.selectrole{
   padding:  5px 0 10px 0;
 }
 
-.instructions {
-  font-size: 12px;
-  margin-top: 5px;
-  color: #777;
-}
-
-.valid {
+.selectrole .valid {
   color: green;
   margin-left: 5px;
 }
 
-.invalid {
+.selectrole .invalid {
   color: red;
   margin-left: 5px;
+}
+.instructions {
+  font-size: 12px;
+  margin-top: 5px;
+  color: #777;
 }
 
 .offscreen {

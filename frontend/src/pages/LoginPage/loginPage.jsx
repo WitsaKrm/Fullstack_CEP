@@ -1,5 +1,5 @@
 import { useState } from "react";
-import"./loginPage.css"
+import style from"./loginPage.moule.css"
 import AppHeader from "../../components/header/app-header"
 import { useHistory } from 'react-router-dom';
 
@@ -64,9 +64,9 @@ const LoginPage = () => {
           required
         />
 
-        {errMsg && <p>{errMsg}</p>}
+        {errMsg && <p className={style.errorMsg}>{errMsg}</p>}
 
-        <button className="loginBtt mt-3" type="submit">LOGIN</button>
+        <button className={style.loginBtt} type="submit">LOGIN</button>
       </form>
     </section>
     <AddUsers/>

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import "./header.css";
+import style from "./header.module.css";
 import UsersPage from "../../pages/UsersPage/users";
 
 const AppHeader = (props) => {
   return (
-    <header className="header-container">
-      <div className="header">
+    <header className={style.headercontainer}>
+      <div className={style.header}>
         <div className="logo-name">
           <a href="/">{props.nameHeader}</a>
           <a href="/users"> +++ </a>

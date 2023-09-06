@@ -5,7 +5,7 @@
   font-size: 24px;
 }
 
-.ss-name {
+.ssname {
   font-size: medium;
 }
 
@@ -14,13 +14,13 @@
   color: #2e572a;
 }
 
-.ss-img {
+.ssimg {
   
   margin: 16px 16px 16px 16px;
   height: 60px;
   width: 60px;
 }
-.ss-value{
+.ssvalue{
   font-size: 32px;
 }
 .updateTime {
@@ -28,7 +28,7 @@
 
 }
 
-.ss-container {
+.sscontainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -44,7 +44,7 @@
   transition: background-color 0.3s, color 0.3s;
 }
 
-.ss-container:hover {
+.sscontainer:hover {
   background-color: #9e9e9e;
   color: white;
 }

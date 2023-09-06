@@ -1,25 +1,25 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./node.css";
+import style from "./node.module.css";
 
 const Node = (props) => {
   const { name, status, src, handleNodeClick } = props;
   const statusClass = status === "1" ? "online" : "offline";
 
   return (
-    <div className="node-container" onClick={handleNodeClick}>
-      <div className="node">
-        <div className="node-img-container">
-          <img className="node-img" src={src} alt="Node Icon" />
+    <div className={style.nodecontainer} onClick={handleNodeClick}>
+      <div className={style.node}>
+        <div className={style.nodeimgcontainer}>
+          <img className={style.nodeimg} src={src} alt="Node Icon" />
         </div>
-        <div className="node-details">
-          <div className="details">
+        <div className={style.nodedetails}>
+          <div className={style.details}>
             <span>{name}</span>
-            <div className={`status-node ${statusClass}`}>
+            <div className={`${style.statusnode} ${statusClass}`}>
               <span>{status === "1" ? "Online" : "Offline"}</span>
             </div>
           </div>
-          <div className="owner">{/* Add owner content here */}</div>
+          <div className={style.owner}>{/* Add owner content here */}</div>
         </div>
       </div>
     </div>

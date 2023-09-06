@@ -7,7 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import "./adduser.css";
+import style from "./adduser.module.css"; // Import your CSS module
 
 const USER_REGEX = /^[a-zA-Z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,24}$/;
@@ -93,24 +93,27 @@ const AddUsers = () => {
       errRef.current.focus();
     }
   };
+
   return (
-    <div className="container">
+    <div className={style.container}>
       {succ ? (
-        <section>
+        <section className={style.section}>
           <h1>
-            Success ! <br /> Relode ...
+            Success ! <br /> Reloading ...
           </h1>
         </section>
       ) : (
-        <section>
+        <section className={style.section}>
           <p
             ref={errRef}
-            className={nameGroup.errMsg ? "errmsg" : "offscreen"}
+            className={nameGroup.errMsg ? style.errmsg : style.offscreen}
             aria-live="assertive"
           >
             {nameGroup.errMsg}
           </p>
-          <h1>ADD USER</h1>
+          <h1 className={style.h1}>
+            ADD USER
+          </h1>
           <form onSubmit={handleSubmit}>
             <label htmlFor="f_name">ชื่อ : </label>
             <input
@@ -142,14 +145,14 @@ const AddUsers = () => {
 
             <label htmlFor="username">
               ชื่อผู้ใช้ :
-              <span className={validGroup.userName ? "valid" : "hide"}>
+              <span className={validGroup.userName ? style.valid : style.hide}>
                 <FontAwesomeIcon icon={faCheck} />
               </span>
               <span
                 className={
                   validGroup.userName || !nameGroup.userName
-                    ? "hide"
-                    : "invalid"
+                    ? style.hide
+                    : style.invalid
                 }
               >
                 <FontAwesomeIcon icon={faTimes} />
@@ -185,8 +188,8 @@ const AddUsers = () => {
                 focusGroup.userName &&
                 nameGroup.userName &&
                 !validGroup.userName
-                  ? "instructions"
-                  : "offscreen"
+                  ? style.instructions
+                  : style.offscreen
               }
             >
               <FontAwesomeIcon icon={faInfoCircle} />
@@ -197,15 +200,15 @@ const AddUsers = () => {
 
             <label htmlFor="password">
               รหัสผ่าน :
-              <span className={validGroup.passWord ? "valid" : "hide"}>
+              <span className={validGroup.passWord ? style.valid : style.hide}>
                 <FontAwesomeIcon icon={faCheck} />
               </span>
               <span
                 className={
                   validGroup.passWord || !nameGroup.passWord
-                    ? "hide"
-                    : "invalid"
-                }
+                    ? style.hide
+                    : style.invalid
+                } 
               >
                 <FontAwesomeIcon icon={faTimes} />
               </span>
@@ -236,28 +239,28 @@ const AddUsers = () => {
               id="pwdnote"
               className={
                 focusGroup.passWord && !validGroup.passWord
-                  ? "instructions"
-                  : "offscreen"
-              }
+                  ? style.instructions
+                  : style.offscreen
+              } 
             >
               <FontAwesomeIcon icon={faInfoCircle} />
               6 to 24 characters. <br />
               must include uppercase and lowercase, and a number. <br />
             </p>
 
-            <div className="select-role">
+            <div className={style.selectrole}>
               <label htmlFor="role">
                 ระดับ :
                 <span
                   className={
                     nameGroup.role === "0" || nameGroup.role === "1"
-                      ? "valid"
-                      : "hide"
-                  }
+                      ? style.valid
+                      : style.hide
+                  } 
                 >
                   <FontAwesomeIcon icon={faCheck} />
                 </span>
-                <span className={!nameGroup.role ? "invalid" : "hide"}>
+                <span className={!nameGroup.role ? style.invalid : style.hide}> 
                   <FontAwesomeIcon icon={faTimes} />
                 </span>
               </label>
@@ -280,10 +283,8 @@ const AddUsers = () => {
             </div>
 
             <button
-              className="addBtt mt-3"
-              disabled={
-                !validGroup.userName || !validGroup.passWord ? true : false
-              }
+              className={style.addBtt} 
+              disabled={!validGroup.userName || !validGroup.passWord}
             >
               ADD USERS
             </button>

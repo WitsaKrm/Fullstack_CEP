@@ -1,4 +1,4 @@
-.header-container{
+.headercontainer{
     background-color: #2e572a;
     margin-bottom: 24px;
   }
@@ -14,7 +14,7 @@
       font-size: 20px;
       text-decoration: none;
     }
-    .nav-link a{
+    .navlink a{
       margin: 0px 8px;
     }
   
