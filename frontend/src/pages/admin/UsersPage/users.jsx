@@ -8,10 +8,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Modal from "@mui/material/Modal";
 import style from "./users.module.css";
-import PopAddUser from "../../components/addusers/addusers";
+import PopAddUser from "../../../components/addusers/addusers";
 
-import APIdataUsers from "../../services/API/user.api";
-import AppHeader from "../../components/header/app-header";
+import APIdataUsers from "../../../services/API/user.api";
+import AppHeader from "../../../components/header/app-header";
 const USERS_URL = "/users";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({

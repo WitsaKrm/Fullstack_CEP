@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import AppHeader from "../../components/header/app-header";
+import AppHeader from "../../../components/header/app-header";
 import style from "./stationPage.module.css";
 
 const StationPage = () => {

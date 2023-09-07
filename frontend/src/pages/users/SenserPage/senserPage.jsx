@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import SenSersBox from "../../components/sensers/sensers";
+import SenSersBox from "../../../components/sensers/sensers";
 import style from "./senserPage.module.css";
-import svg from "../../assets/svg/svg";
-import AppHeader from "../../components/header/app-header";
-import { FetchSensers, FetchChart,FetchOneChart } from "../../services/API/node.api";
-import Chart from "../../components/chart/chart";
+import svg from "../../../assets/svg/svg";
+import AppHeader from "../../../components/header/app-header";
+import { FetchSensers, FetchChart,FetchOneChart } from "../../../services/API/node.api";
+import Chart from "../../../components/chart/chart";
 
 const SS_URL = "/senser";
 const CHART_SS_URL = "/chart_ss";
