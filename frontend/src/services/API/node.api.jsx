@@ -26,8 +26,6 @@ export function FetchDevicesById(SET,URL,ID) {
       };
       fetchNodes()
 }
-
-
 export function FetchSensers (SET,URL,ID) {
     const fetchSensers = async () => {
     try {

@@ -1,5 +1,5 @@
 import React from "react";
-import style from"./chart.module.css";
+import style from "./chart.module.css";
 
 import {
   AreaChart,
@@ -12,19 +12,28 @@ import {
 } from "recharts";
 
 const Chart = ({ data }) => {
+  console.log(data);
+  const formattedData = data.map((item) => ({
+    ...item,
+    dateTime: `${item.date} ${item.time}`,
+  }));
   return (
     <>
-      <div className="chart-container">
+      <div className={style["chart-container"]}>
         <div className="filter">
           <div className="btn btn-primary">All</div>
         </div>
         <div className="chart"></div>
-        <ResponsiveContainer width="95%" height={400}>
+        <ResponsiveContainer
+          className={style["responsive-container"]}
+          width="95%"
+          height={450}
+        >
           <AreaChart
             width={650}
             height={350}
-            data={data}
-            margin={{ top: 10, right: 30, left: 0, bottom: 60 }}
+            data={formattedData}
+            margin={{ top: 10, right: 30, left: 50, bottom: 100 }}
           >
             <defs>
               <linearGradient
@@ -56,7 +65,12 @@ const Chart = ({ data }) => {
                 y2="1"
               ></linearGradient>
             </defs>
-            <XAxis dataKey="date" tickCount={10} angle={-45} textAnchor="end" />
+            <XAxis
+              dataKey="dateTime"
+              tickCount={10}
+              angle={-45}
+              textAnchor="end"
+            />
             <YAxis domain={[0, 100]} tickCount={5} />
             <CartesianGrid strokeDasharray="3 3" />
             <Tooltip />

@@ -9,6 +9,7 @@ import LevelSlide from "../../../components/waterlevel/levelslide";
 
 const StationPage = () => {
   const history = useHistory();
+  const [mode, setMode] = useState([]);
   const [isAutoVisible, setIsAutoVisible] = useState();
   const [isManualVisible, setIsManualVisible] = useState();
 

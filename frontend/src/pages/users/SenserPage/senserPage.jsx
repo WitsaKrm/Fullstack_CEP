@@ -23,7 +23,6 @@ const SensersPage = () => {
       try {
         await FetchSensers(setSensers, SS_URL, `${nodeId}`);
         await FetchChart(setChartSensers, CHART_SS_URL, `${nodeId}`);
-        // await FetchOneChart(setOneChart, CHART_SS_URL,"air_temp",`${nodeId}`);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
