@@ -4,7 +4,7 @@ import style from "./node.module.css";
 
 const Node = (props) => {
   const { name, status, src, handleNodeClick } = props;
-  const statusClass = status === "1" ? "online" : "offline";
+  const statusClass = status === "1" ? style.online : style.offline;
 
   return (
     <div className={style.nodecontainer} onClick={handleNodeClick}>
