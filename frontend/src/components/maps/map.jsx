@@ -1,58 +1,43 @@
 import React, { useEffect } from "react";
 import style from "./map.module.css";
-import { LongdoMap, longdo, map } from "./../longdomap/longdomap";
 
 const Maps = (props) => {
-  console.log(props);
-  const mapKey = props.APIkey;
-
+  console.log("DATA :" ,props);
   useEffect(() => {
-    const initMap = () => {
-      console.log("InitMap called");
-      const marker1 = new longdo.Marker(
-        { lon: 102.863592, lat: 16.42843 },
+    const script = document.createElement("script");
+    script.src = "https://api.longdo.com/map/?key=d50aa5bfdd20b1c8c14056d41f9479cd"; // Replace with your actual LongdoMap API key
+    script.async = true;
+    script.onload = () => {
+      // LongdoMap library is loaded
+      const map = new window.longdo.Map({
+        placeholder: document.getElementById("longdo-map"),
+        zoom: 20,
+        location: { lon: props.lon, lat: props.lat },
+      });
+
+      const marker = new window.longdo.Marker(
+        { lon: props.lon, lat: props.lat },
         {
-          title: "RMUTI",
-          icon: {
-            url: "https://map.longdo.com/mmmap/images/pin_mark.png",
-            offset: { x: 12, y: 45 },
-          },
-          detail: "มหาวิทยาลัยเทคโนโลยีราชมงคล วิทยาเขตขอนแก่น",
-          weight: longdo.OverlayWeight.Top,
+          title: props.title,
+          detail: props.detail+"มาแก้ Detail ด้วย",
+          weight: window.longdo.OverlayWeight.Top,
         }
       );
 
-      map.Overlays.add(marker1);
-      map.Layers.setBase(longdo.Layers.GRAY);
-      map.location({ lon: 102.8611283, lat: 16.4282731 }, true);
-      map.zoom(18);
-      console.log("Marker added to the map.");
+      map.Overlays.add(marker);
     };
 
-    const callback = () => {
-      initMap();
-    };
-
-    if (window.longdo) {
-      callback();
-    } else {
-      console.log("Longdo is not available yet");
-    }
+    document.body.appendChild(script);
 
     return () => {
       // Cleanup: remove the script when the component unmounts
-      const existingScript = document.getElementById("longdoMapScript");
-      if (existingScript) {
-        document.body.removeChild(existingScript);
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
       }
     };
-  }, [mapKey]);
+  }, [props.lon, props.lat]);
 
-  return (
-    <div className={style.map_container}>
-      <LongdoMap id="longdo-map" mapKey={mapKey} />
-    </div>
-  );
+  return <div id="longdo-map" className={style.map_container}></div>;
 };
 
 export default Maps;

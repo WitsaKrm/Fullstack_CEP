@@ -17,17 +17,17 @@ const IndexPage = () => {
     async function fetchData() {
       try {
         await FetchDevicesById(setDevices, DEVICE_URL);
-        setIsLoading(false); // Data fetching is complete, set isLoading to false
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setIsLoading(false); // Data fetching is complete, even if it failed
+        setIsLoading(false);
       }
     }
     fetchData();
   }, []);
 
-  const handleNodeClick = (userId, type, nodeId) => {
-    history.push(`/${type}/${nodeId}`);
+  const handleNodeClick = (userId, type, nodeId, lat, lon) => {
+    history.push(`/${type}/${nodeId}?lat=${lat}&lon=${lon}`);
   };
 
   if (isLoading) {
@@ -37,65 +37,50 @@ const IndexPage = () => {
   return (
     <>
       <AppHeader nameHeader="ComputerEng PROJECT" />
-      <div className="container">
-        <div className="col">
-          <div className="row">
-            {devices.map(
-              (station) =>
-                // Check if station.type is "station" before rendering the NodeBox component
-                station.type === "station" && (
-                  <div
-                    className="node col-md-3 d-flex"
-                    key={station.d_id}
-                  >
+      <div className={`container-fluid ${style.indexPageContainer}`}>
+        <div className="row">
+          {devices.map(
+            (station) =>
+              station.type === "station" && (
+                <div className="col-md-3 col-sm-6" key={station.d_id}>
+                  <div className={`node d-flex ${style.nodeBox}`}>
                     <NodeBox
                       name={station.d_name.toUpperCase()}
-                      src={
-                        station.type === "station"
-                          ? svg.station.default
-                          : svg.station.default
-                      }
+                      src={svg.station.default}
                       status={station.status.toString()}
                       handleNodeClick={() =>
-                        handleNodeClick(
-                          station.userId,
-                          "station",
-                          station.d_id
-                        )
+                        handleNodeClick(station.userId, "station", station.d_id)
                       }
                     />
                   </div>
-                )
-            )}
-          </div>
-          <div className="row">
-            {devices.map(
-              (node) =>
-                node.type === "node" && (
-                  <div
-                    className="node col-md-3 d-flex"
-                    key={node.d_id}
-                  >
+                </div>
+              )
+          )}
+        </div>
+        <div className="row">
+          {devices.map(
+            (node) =>
+              node.type === "node" && (
+                <div className="col-md-3 col-sm-6" key={node.d_id}>
+                  <div className={`node d-flex ${style.nodeBox}`}>
                     <NodeBox
                       name={node.d_name.toUpperCase()}
-                      src={
-                        node.type === "node"
-                          ? svg.node.default
-                          : svg.station.default
-                      }
+                      src={svg.node.default}
                       status={node.status.toString()}
                       handleNodeClick={() =>
                         handleNodeClick(
                           node.userId,
                           node.type === "station" ? "station" : "senser",
-                          node.d_id
+                          node.d_id,
+                          node.lat,
+                          node.lon
                         )
                       }
                     />
                   </div>
-                )
-            )}
-          </div>
+                </div>
+              )
+          )}
         </div>
       </div>
     </>
