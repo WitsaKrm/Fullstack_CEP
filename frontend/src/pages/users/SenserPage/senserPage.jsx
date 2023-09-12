@@ -6,6 +6,7 @@ import svg from "../../../assets/svg/svg";
 import AppHeader from "../../../components/header/app-header";
 import { FetchSensers, FetchChart,FetchOneChart } from "../../../services/API/node.api";
 import Chart from "../../../components/chart/chart";
+import Maps from "../../../components/maps/map";
 
 const SS_URL = "/senser";
 const CHART_SS_URL = "/chart_ss";
@@ -85,6 +86,7 @@ const SensersPage = () => {
     <>
     <AppHeader nameHeader={`NODE Sensers`} />
     <div className="container">
+      <Maps APIkey="d50aa5bfdd20b1c8c14056d41f9479cd"></Maps>
       <div className="row">
         {mockData.map((data, index) => (
           <div className="col-lg-3 col-md-3 col-sm-6" key={index}>
