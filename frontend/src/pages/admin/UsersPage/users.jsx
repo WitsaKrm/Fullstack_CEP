@@ -9,6 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import Modal from "@mui/material/Modal";
 import style from "./users.module.css";
 import PopAddUser from "../../../components/addusers/addusers";
+import ExportFile from "../../../services/fileExport";
 
 import APIdataUsers from "../../../services/API/user.api";
 import AppHeader from "../../../components/header/app-header";
@@ -53,13 +54,26 @@ const UsersPage = () => {
 
   // Define filteredUsers based on filterFirstName and users state
   const filteredUsers = users.filter((user) => {
-    const firstNameMatch = user.f_name.toLowerCase().includes(filterFirstName.toLowerCase());
-    const lastNameMatch = user.l_name.toLowerCase().includes(filterLastName.toLowerCase());
-    const usernameMatch = user.username.toLowerCase().includes(filterUsername.toLowerCase());
+    const firstNameMatch = user.f_name
+      .toLowerCase()
+      .includes(filterFirstName.toLowerCase());
+    const lastNameMatch = user.l_name
+      .toLowerCase()
+      .includes(filterLastName.toLowerCase());
+    const usernameMatch = user.username
+      .toLowerCase()
+      .includes(filterUsername.toLowerCase());
     const roleMatch = filterRole === "" || user.role.toString() === filterRole;
-    const statusMatch = filterStatus === "" || user.status.toString() === filterStatus;
+    const statusMatch =
+      filterStatus === "" || user.status.toString() === filterStatus;
 
-    return firstNameMatch && lastNameMatch && usernameMatch && roleMatch && statusMatch ;
+    return (
+      firstNameMatch &&
+      lastNameMatch &&
+      usernameMatch &&
+      roleMatch &&
+      statusMatch
+    );
   });
 
   APIdataUsers(setUsers, USERS_URL, setLoading);
@@ -73,7 +87,7 @@ const UsersPage = () => {
           <h2 className="col">
             Users <b>Management</b>
           </h2>
-          <div className={style.col.wrapper}>
+          <div  className={`col ${style.titleColumn}`}>
             <i
               className={style.add_users}
               title="ADD USERS"
@@ -82,27 +96,27 @@ const UsersPage = () => {
             >
               <i className="material-icons">add_circle</i>
             </i>
-            <i
-              className={style.exp_xcel}
-              title="Export to Excel"
-              data-toggle="tooltip"
-            >
-              <i className="material-icons">insert_drive_file</i>
-            </i>
+            <ExportFile
+              excelData={users}
+              fileName="Users"
+              classIcon={style.exp_xcel}
+            ></ExportFile>
           </div>
         </div>
       </div>
+      
 
       <div className={style.table}>
         <TableContainer>
           <Table aria-label="customized table">
             <TableHead>
-            <TableRow>
+              <TableRow>
                 <StyledTableCell align="center">#</StyledTableCell>
                 <StyledTableCell align="left">
-                  FIRST NAME<br/>
+                  FIRST NAME
+                  <br />
                   <input
-                  style={{ width: '100px' }}
+                    style={{ width: "100px" }}
                     type="text"
                     title="Filter by Firstname"
                     value={filterFirstName}
@@ -110,9 +124,10 @@ const UsersPage = () => {
                   />
                 </StyledTableCell>
                 <StyledTableCell align="left">
-                  LAST NAME<br/>
+                  LAST NAME
+                  <br />
                   <input
-                  style={{ width: '100px' }}
+                    style={{ width: "100px" }}
                     type="text"
                     title="Filter by Lastname"
                     value={filterLastName}
@@ -120,9 +135,10 @@ const UsersPage = () => {
                   />
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  USERNAME<br/>
+                  USERNAME
+                  <br />
                   <input
-                  style={{ width: '100px' }}
+                    style={{ width: "100px" }}
                     type="text"
                     title="Filter by Username"
                     value={filterUsername}
@@ -130,9 +146,10 @@ const UsersPage = () => {
                   />
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  ROLE<br/>
+                  ROLE
+                  <br />
                   <input
-                  style={{ width: '100px' }}
+                    style={{ width: "100px" }}
                     type="text"
                     title="(0 = Admin , 1 = Users)"
                     value={filterRole}
@@ -140,18 +157,17 @@ const UsersPage = () => {
                   />
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  STATUS<br/>
-                  <input 
-                  style={{ width: '100px' }}
+                  STATUS
+                  <br />
+                  <input
+                    style={{ width: "100px" }}
                     type="text"
                     title="(0 = Deactive , 1 = Active)"
                     value={filterStatus}
                     onChange={(e) => setFilterStatus(e.target.value)}
                   />
                 </StyledTableCell>
-                <StyledTableCell align="center">
-                  CREATED DATE
-                </StyledTableCell>
+                <StyledTableCell align="center">CREATED DATE</StyledTableCell>
                 <StyledTableCell align="center">ACTION</StyledTableCell>
               </TableRow>
             </TableHead>
@@ -181,11 +197,21 @@ const UsersPage = () => {
                       <h6>{user.role === 0 ? <b>{"Admin"}</b> : "Users"}</h6>
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {user.status === 1 ? (
-                        <span className={style.status.textsuccess}>&#8226;</span>
-                      ) : (
-                        <span className={style.status.textdanger}>&#8226;</span>
-                      )}
+                      <h6>
+                        {user.status === 1 ? (
+                          <span
+                            className={`${style.status} ${style.textsuccess}`}
+                          >
+                            &bull;
+                          </span>
+                        ) : (
+                          <span
+                            className={`${style.status} ${style.textdanger}`}
+                          >
+                            &bull;
+                          </span>
+                        )}
+                      </h6>
                     </StyledTableCell>
 
                     <StyledTableCell align="center">

@@ -18,11 +18,13 @@ th {
   gap: 10px;
   padding: 0;
 }
+/* .titleColumn{
+  flex-direction:column-reverse;
+} */
 .add_users{
     color: rgb(62, 94, 201);
-    margin-right: 4px;
+    margin-right: 16px;
     margin-top: 8px;
-
     cursor: pointer;
 }
 .exp_xcel{
@@ -53,6 +55,7 @@ th {
 }
 .textdanger {
     color: #ff5b5b;
+
 }
 .textsuccess {
     color: #10c469;
