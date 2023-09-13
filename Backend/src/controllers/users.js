@@ -16,7 +16,6 @@ const getUsers = async (req, res) => {
       res.json({ status: "Error", message: err });
     });
 };
-
 const getUserById = async (req, res) => {
   console.log("getUserById");
   let userId = req.params.userId;
@@ -34,7 +33,6 @@ const getUserById = async (req, res) => {
     res.json({ status: "Error", message: err.message });
   }
 };
-
 const postUser = async (req, res) => {
   console.log("postUser");
   const data = req.body;

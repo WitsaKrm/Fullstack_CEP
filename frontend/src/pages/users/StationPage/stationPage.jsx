@@ -12,7 +12,7 @@ import Maps from "../../../components/maps/map";
 const StationPage = () => {
   const { nodeId } = useParams();
   const history = useHistory();
-  const [mode, setMode] = useState([]);
+  const [mode, setMode] = useState();
   const [isAutoVisible, setIsAutoVisible] = useState();
   const [isManualVisible, setIsManualVisible] = useState();
 

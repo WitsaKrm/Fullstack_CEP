@@ -37,14 +37,30 @@ const UsersPage = () => {
   const [users, setUsers] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
+  const [filterFirstName, setFilterFirstName] = React.useState("");
+  const [filterLastName, setFilterLastName] = React.useState("");
+  const [filterUsername, setFilterUsername] = React.useState("");
+  const [filterRole, setFilterRole] = React.useState("");
+  const [filterStatus, setFilterStatus] = React.useState("");
+  const [filterCreatedDate, setFilterCreatedDate] = React.useState("");
 
   const handleOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
+
+  // Define filteredUsers based on filterFirstName and users state
+  const filteredUsers = users.filter((user) => {
+    const firstNameMatch = user.f_name.toLowerCase().includes(filterFirstName.toLowerCase());
+    const lastNameMatch = user.l_name.toLowerCase().includes(filterLastName.toLowerCase());
+    const usernameMatch = user.username.toLowerCase().includes(filterUsername.toLowerCase());
+    const roleMatch = filterRole === "" || user.role.toString() === filterRole;
+    const statusMatch = filterStatus === "" || user.status.toString() === filterStatus;
+
+    return firstNameMatch && lastNameMatch && usernameMatch && roleMatch && statusMatch ;
+  });
 
   APIdataUsers(setUsers, USERS_URL, setLoading);
 
@@ -57,7 +73,7 @@ const UsersPage = () => {
           <h2 className="col">
             Users <b>Management</b>
           </h2>
-          <div className={style.col .wrapper}>
+          <div className={style.col.wrapper}>
             <i
               className={style.add_users}
               title="ADD USERS"
@@ -76,18 +92,66 @@ const UsersPage = () => {
           </div>
         </div>
       </div>
+
       <div className={style.table}>
         <TableContainer>
           <Table aria-label="customized table">
             <TableHead>
-              <TableRow>
+            <TableRow>
                 <StyledTableCell align="center">#</StyledTableCell>
-                <StyledTableCell align="left">FIRST NAME</StyledTableCell>
-                <StyledTableCell align="left">LAST NAME</StyledTableCell>
-                <StyledTableCell align="center">USERNAME</StyledTableCell>
-                <StyledTableCell align="center">ROLE</StyledTableCell>
-                <StyledTableCell align="center">STATUS</StyledTableCell>
-                <StyledTableCell align="center">CREATED DATE</StyledTableCell>
+                <StyledTableCell align="left">
+                  FIRST NAME<br/>
+                  <input
+                  style={{ width: '100px' }}
+                    type="text"
+                    title="Filter by Firstname"
+                    value={filterFirstName}
+                    onChange={(e) => setFilterFirstName(e.target.value)}
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                  LAST NAME<br/>
+                  <input
+                  style={{ width: '100px' }}
+                    type="text"
+                    title="Filter by Lastname"
+                    value={filterLastName}
+                    onChange={(e) => setFilterLastName(e.target.value)}
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  USERNAME<br/>
+                  <input
+                  style={{ width: '100px' }}
+                    type="text"
+                    title="Filter by Username"
+                    value={filterUsername}
+                    onChange={(e) => setFilterUsername(e.target.value)}
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  ROLE<br/>
+                  <input
+                  style={{ width: '100px' }}
+                    type="text"
+                    title="(0 = Admin , 1 = Users)"
+                    value={filterRole}
+                    onChange={(e) => setFilterRole(e.target.value)}
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  STATUS<br/>
+                  <input 
+                  style={{ width: '100px' }}
+                    type="text"
+                    title="(0 = Deactive , 1 = Active)"
+                    value={filterStatus}
+                    onChange={(e) => setFilterStatus(e.target.value)}
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  CREATED DATE
+                </StyledTableCell>
                 <StyledTableCell align="center">ACTION</StyledTableCell>
               </TableRow>
             </TableHead>
@@ -99,33 +163,33 @@ const UsersPage = () => {
                   </StyledTableCell>
                 </TableRow>
               ) : (
-                users.map((users, index) => (
+                filteredUsers.map((user, index) => (
                   <StyledTableRow key={index}>
                     <StyledTableCell align="center">
                       <h5>{index + 1}</h5>
                     </StyledTableCell>
                     <StyledTableCell align="left">
-                      <h6>{users.f_name}</h6>
+                      <h6>{user.f_name}</h6>
                     </StyledTableCell>
                     <StyledTableCell align="left">
-                      <h6>{users.l_name}</h6>
+                      <h6>{user.l_name}</h6>
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      <h6>{users.username}</h6>
+                      <h6>{user.username}</h6>
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      <h6>{users.role === 0 ? <b>Admin</b> : "Users"}</h6>
+                      <h6>{user.role === 0 ? <b>{"Admin"}</b> : "Users"}</h6>
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {users.status === 1 ? (
-                        <span className={style.status .textsuccess}>&#8226;</span>
+                      {user.status === 1 ? (
+                        <span className={style.status.textsuccess}>&#8226;</span>
                       ) : (
-                        <span className={style.status .textdanger}>&#8226;</span>
+                        <span className={style.status.textdanger}>&#8226;</span>
                       )}
                     </StyledTableCell>
 
                     <StyledTableCell align="center">
-                      <h6>{users.date}</h6>
+                      <h6>{user.date}</h6>
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       <i
@@ -152,8 +216,7 @@ const UsersPage = () => {
       </div>
       <Modal open={open} onClose={handleClose}>
         <div className={style.modal}>
-          <PopAddUser /> {/* Render the PopAddUser component here */}
-          {/* <h2>Add User</h2> Remove or move this line */}
+          <PopAddUser />
         </div>
       </Modal>
     </>

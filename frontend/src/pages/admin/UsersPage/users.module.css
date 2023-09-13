@@ -57,3 +57,6 @@ th {
 .textsuccess {
     color: #10c469;
 }
+.modal{
+  margin-top: 64px;
+}
