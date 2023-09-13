@@ -4,14 +4,23 @@ import AppHeader from "../../../components/header/app-header";
 import style from "./stationPage.module.css";
 
 import Box from "../../../components/box/box";
+import { useParams, useLocation } from "react-router-dom";
 import WaterLevel from "../../../components/waterlevel/waterlevel";
 import LevelSlide from "../../../components/waterlevel/levelslide";
+import Maps from "../../../components/maps/map";
 
 const StationPage = () => {
+  const { nodeId } = useParams();
   const history = useHistory();
   const [mode, setMode] = useState([]);
   const [isAutoVisible, setIsAutoVisible] = useState();
   const [isManualVisible, setIsManualVisible] = useState();
+
+    // Use useLocation to access query parameters
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const lat = queryParams.get("lat");
+    const lon = queryParams.get("lon");
 
   const handleAutoClick = () => {
     setIsAutoVisible(true);
@@ -80,6 +89,7 @@ const StationPage = () => {
   return (
     <>
       <AppHeader nameHeader="STATION" />
+      <Maps lat={lat} lon={lon} title={`STATION ${nodeId}`} detail={""}></Maps>
       <div className="container">
         <div className={style.btt}>
           <div

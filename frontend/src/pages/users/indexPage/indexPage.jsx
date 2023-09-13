@@ -49,7 +49,13 @@ const IndexPage = () => {
                       src={svg.station.default}
                       status={station.status.toString()}
                       handleNodeClick={() =>
-                        handleNodeClick(station.userId, "station", station.d_id)
+                        handleNodeClick(
+                          station.userId,
+                          "station",
+                          station.d_id,
+                          station.lat,
+                          station.lon
+                        )
                       }
                     />
                   </div>
