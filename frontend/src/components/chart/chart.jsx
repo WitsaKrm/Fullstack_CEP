@@ -17,11 +17,12 @@ const Chart = ({ data }) => {
     ...item,
     dateTime: `${item.date} ${item.time}`,
   }));
+  console.log(formattedData);
   return (
     <>
       <div className={style["chart-container"]}>
         <div className="filter">
-          <div className="btn btn-primary">All</div>
+          
         </div>
         <div className="chart"></div>
         <ResponsiveContainer
