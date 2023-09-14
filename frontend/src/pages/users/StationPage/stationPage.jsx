@@ -16,11 +16,11 @@ const StationPage = () => {
   const [isAutoVisible, setIsAutoVisible] = useState();
   const [isManualVisible, setIsManualVisible] = useState();
 
-    // Use useLocation to access query parameters
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const lat = queryParams.get("lat");
-    const lon = queryParams.get("lon");
+  // Use useLocation to access query parameters
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const lat = queryParams.get("lat");
+  const lon = queryParams.get("lon");
 
   const handleAutoClick = () => {
     setIsAutoVisible(true);
@@ -38,7 +38,7 @@ const StationPage = () => {
       <h1>AUTO mode</h1>
       <Box
         detail={
-          <>
+          <div>
             <h3>เริ่มต้นทำงานวันที่ 7/9/2566</h3>
             <h3>ลำดับการทำงาน</h3>
             <ul>
@@ -58,11 +58,13 @@ const StationPage = () => {
               <li>รอ 20 วัน ปล่อยให้น้ำแห้ง</li>
             </ul>
             <p>*</p>
-          </>
+          </div>
         }
       />
-      <div className="btn btn-primary">เริ่มการทำงาน</div>
-      <div className="btn btn-danger">ยกเลิก</div>
+      <div className={style.btt}>
+        <div className={`btn btn-primary ${style.btn}`}>เริ่มการทำงาน</div>
+        <div className={`btn btn-danger ${style.btn}`}>ยกเลิก</div>
+      </div>
     </>
   );
 

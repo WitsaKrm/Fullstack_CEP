@@ -87,21 +87,6 @@ const UsersPage = () => {
           <h2 className="col">
             Users <b>Management</b>
           </h2>
-          <div  className={`col ${style.titleColumn}`}>
-            <i
-              className={style.add_users}
-              title="ADD USERS"
-              data-toggle="tooltip"
-              onClick={handleOpen}
-            >
-              <i className="material-icons">add_circle</i>
-            </i>
-            <ExportFile
-              excelData={users}
-              fileName="Users"
-              classIcon={style.exp_xcel}
-            ></ExportFile>
-          </div>
         </div>
       </div>
       
@@ -168,7 +153,22 @@ const UsersPage = () => {
                   />
                 </StyledTableCell>
                 <StyledTableCell align="center">CREATED DATE</StyledTableCell>
-                <StyledTableCell align="center">ACTION</StyledTableCell>
+                <StyledTableCell align="center">
+                <i
+              className={style.add_users}
+              title="ADD USERS"
+              data-toggle="tooltip"
+              onClick={handleOpen}
+            >
+              <i className="material-icons">add_circle</i>
+            </i>
+            <ExportFile
+              excelData={users}
+              fileName="Users"
+              classIcon={style.exp_xcel}
+            ></ExportFile>
+
+                </StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>

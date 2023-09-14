@@ -18,9 +18,10 @@ th {
   gap: 10px;
   padding: 0;
 }
-/* .titleColumn{
-  flex-direction:column-reverse;
-} */
+.titleColumn{
+  display: flex;
+  justify-content: flex-end;
+}
 .add_users{
     color: rgb(62, 94, 201);
     margin-right: 16px;
@@ -28,21 +29,21 @@ th {
     cursor: pointer;
 }
 .exp_xcel{
-    color: rgb(52, 117, 35);
-    margin-right: 40px;
+    color: rgb(220, 231, 217);
+    margin-right: px;
     margin-top: 8px;
     cursor: pointer;
 
 }
 .edit{
     color: rgb(52, 117, 35);
-    margin-right: 4px;
+    margin-right: 16px;
     cursor: pointer;
 
 }
 .delete{
     color: rgb(179, 17, 17);
-    margin-right: 4px;
+    margin-right: 8px;
     cursor: pointer;
 
 }

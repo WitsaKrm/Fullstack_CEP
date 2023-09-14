@@ -4,9 +4,15 @@ import SenSersBox from "../../../components/sensers/sensers";
 import style from "./senserPage.module.css";
 import svg from "../../../assets/svg/svg";
 import AppHeader from "../../../components/header/app-header";
-import { FetchSensers, FetchChart, FetchOneChart } from "../../../services/API/node.api";
+import {
+  FetchSensers,
+  FetchChart,
+  FetchOneChart,
+} from "../../../services/API/node.api";
 import Chart from "../../../components/chart/chart";
 import Maps from "../../../components/maps/map";
+
+import ExportExcel from "../../../services/fileExport";
 
 const SS_URL = "/senser";
 const CHART_SS_URL = "/chart_ss";
@@ -47,8 +53,12 @@ const SensersPage = () => {
   const handleSenserClick = (sensorKey) => {
     FetchOneChart(setOneChart, CHART_SS_URL, `${sensorKey}`, `${nodeId}`);
     setSelectedSensor(sensorKey);
-    setShowAllChart(false); // Reset to show individual chart when a sensor is clicked
+    setShowAllChart(false); // Reset to show an individual chart when a sensor is clicked
     console.log(sensorKey);
+  };
+
+  const handleExportToExcel = () => {
+    console.log(`Data_node_${nodeId}`, chartSensers);
   };
 
   const mockData = [
@@ -94,7 +104,12 @@ const SensersPage = () => {
     <>
       <AppHeader nameHeader={`NODE Sensers`} />
       <div className={`container-fluid ${style.sensersPageContainer}`}>
-        <Maps lat={lat} lon={lon} title={`NODE ${nodeId}`} detail={sensers}></Maps>
+        <Maps
+          lat={lat}
+          lon={lon}
+          title={`NODE ${nodeId}`}
+          detail={sensers}
+        ></Maps>
         <div className="row">
           {mockData.map((data, index) => (
             <div className="col-lg-3 col-md-4 col-sm-6" key={index}>
@@ -112,17 +127,29 @@ const SensersPage = () => {
           ))}
         </div>
         <div className="chart-container">
-          <div className="btn btn-primary" onClick={() => setShowAllChart(true)}>
-            All
+          <div className={style.butt}>
+            <div
+              className={`btn btn-primary ${style.btn}`}
+              onClick={() => setShowAllChart(true)}
+            >
+              All
+            </div>
+            <div className={`btn btn-dark ${style.btn}`}>
+              <ExportExcel
+                classIcon={style.exp_xcel}
+                className="btn btn-dark"
+                excelData={chartSensers}
+                fileName={`Data_node_${nodeId}`}
+                onClick={handleExportToExcel}
+              ></ExportExcel>
+            </div>
           </div>
           {showAllChart ? (
             <Chart data={chartSensers} senserKey={selectedSensor} />
+          ) : selectedSensor ? (
+            <Chart data={oneChart} senserKey={selectedSensor} />
           ) : (
-            selectedSensor ? (
-              <Chart data={oneChart} senserKey={selectedSensor} />
-            ) : (
-              <Chart data={chartSensers} senserKey={selectedSensor} />
-            )
+            <Chart data={chartSensers} senserKey={selectedSensor} />
           )}
         </div>
       </div>

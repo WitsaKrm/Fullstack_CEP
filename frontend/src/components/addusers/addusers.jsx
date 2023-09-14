@@ -194,6 +194,7 @@ const AddUsers = () => {
             >
               <FontAwesomeIcon icon={faInfoCircle} />
               3 to 24 characters. <br />
+              1 or more large letters.<br />
               must begin with a letter. <br />
               Letters, Numbers, underscores, hyphens, allowed.
             </p>

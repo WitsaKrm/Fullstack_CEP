@@ -2,12 +2,14 @@ import React from "react";
 import * as FileSaver from "file-saver";
 import * as XLSX from "sheetjs-style";
 
-const ExportExcel = ({ excelData, fileName, classIcon }) => {
-  const fileType =
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-  const fileExtension = "xlsx";
+const fileType =
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+const fileExtension = "xlsx";
 
+const ExportExcel = ({ excelData, fileName ,classIcon}) => {
+    console.log("ExportExcel");
   const exportToExcel = () => {
+    console.log("exportToExcel");
     const ws = XLSX.utils.json_to_sheet(excelData);
     const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
     const excelBuffer = XLSX.write(wb, {
@@ -15,20 +17,20 @@ const ExportExcel = ({ excelData, fileName, classIcon }) => {
       type: "array",
     });
     const data = new Blob([excelBuffer], { type: fileType });
-    FileSaver.saveAs(data, fileName + "." + fileExtension);
+    FileSaver.saveAs(data, fileName);
   };
 
   return (
     <>
-      <i
-        className={classIcon}
-        onClick={exportToExcel}
-        title="Export to Excel"
-        data-toggle="tooltip"
-      >
-        <i className="material-icons">insert_drive_file</i>
-      </i>
-    </>
+    <i
+      className={classIcon}
+      onClick={exportToExcel}
+      title="Export to Excel"
+      data-toggle="tooltip"
+    >
+      <i className="material-icons">insert_drive_file</i>
+    </i>
+  </>
   );
 };
 
