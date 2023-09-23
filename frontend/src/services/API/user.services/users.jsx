@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import endpoint from "../axios";
 
-const APIdataUsers = (setUsers, USERS_URL, setLoading) => {
+export function  APIdataUsers (setUsers, USERS_URL, setLoading){
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -13,9 +13,9 @@ const APIdataUsers = (setUsers, USERS_URL, setLoading) => {
         console.error("Failed to fetch users:", error);
       }
     };
-
     fetchUsers();
   }, [setUsers, USERS_URL, setLoading]);
 };
-
-export default APIdataUsers;
+ export function APIeditUser(){
+  
+ }

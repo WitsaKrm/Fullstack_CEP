@@ -6,13 +6,16 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import Swal from "sweetalert2";
 import Modal from "@mui/material/Modal";
 import style from "./users.module.css";
 import PopAddUser from "../../../components/addusers/addusers";
+import PopUpdateUser from "../../../components/edituser/editUser";
 import ExportFile from "../../../services/fileExport";
 
-import APIdataUsers from "../../../services/API/user.api";
+import {APIdataUsers} from "../../../services/API/user.api";
 import AppHeader from "../../../components/header/app-header";
+
 const USERS_URL = "/users";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -36,7 +39,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const UsersPage = () => {
   const [users, setUsers] = React.useState([]);
-  const [open, setOpen] = React.useState(false);
+  const [addOpen, setAddOpen] = React.useState(false);
+  const [editOpen, setEditOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [filterFirstName, setFilterFirstName] = React.useState("");
   const [filterLastName, setFilterLastName] = React.useState("");
@@ -45,11 +49,37 @@ const UsersPage = () => {
   const [filterStatus, setFilterStatus] = React.useState("");
   const [filterCreatedDate, setFilterCreatedDate] = React.useState("");
 
-  const handleOpen = () => {
-    setOpen(true);
+  const [selectedUserData, setSelectedUserData] = React.useState(null);
+
+  const handleEditOpen = (userID) => {
+    console.log(userID);
+    // Find the user object with the matching user_id
+    const selectedUser = users.find((user) => user.user_id === userID);
+    setSelectedUserData(selectedUser); // Set the selectedUserData
+    setEditOpen(true);
   };
-  const handleClose = () => {
-    setOpen(false);
+
+  const handleEditClose = () => {
+    setEditOpen(false);
+  };
+  const handleAddOpen = () => {
+    setAddOpen(true);
+  };
+  const handleAddClose = () => {
+    setAddOpen(false);
+  };
+  const handleDeleteUser = (user) => {
+    Swal.fire({
+      title: "ต้องการลบผู้ใช้นี้ ?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "ผู้ใช้ถูกลบแล้ว", "success");
+      }
+    });
   };
 
   // Define filteredUsers based on filterFirstName and users state
@@ -66,13 +96,12 @@ const UsersPage = () => {
     const roleMatch = filterRole === "" || user.role.toString() === filterRole;
     const statusMatch =
       filterStatus === "" || user.status.toString() === filterStatus;
-
     return (
       firstNameMatch &&
       lastNameMatch &&
       usernameMatch &&
       roleMatch &&
-      statusMatch
+      statusMatch 
     );
   });
 
@@ -81,7 +110,6 @@ const UsersPage = () => {
   return (
     <>
       <AppHeader />
-
       <div className={style.title}>
         <div className="row">
           <h2 className="col">
@@ -89,7 +117,6 @@ const UsersPage = () => {
           </h2>
         </div>
       </div>
-      
 
       <div className={style.table}>
         <TableContainer>
@@ -97,6 +124,7 @@ const UsersPage = () => {
             <TableHead>
               <TableRow>
                 <StyledTableCell align="center">#</StyledTableCell>
+                <StyledTableCell align="center">USER ID</StyledTableCell>
                 <StyledTableCell align="left">
                   FIRST NAME
                   <br />
@@ -141,7 +169,7 @@ const UsersPage = () => {
                     onChange={(e) => setFilterRole(e.target.value)}
                   />
                 </StyledTableCell>
-                <StyledTableCell align="center">
+                {/* <StyledTableCell align="center">
                   STATUS
                   <br />
                   <input
@@ -151,23 +179,22 @@ const UsersPage = () => {
                     value={filterStatus}
                     onChange={(e) => setFilterStatus(e.target.value)}
                   />
-                </StyledTableCell>
+                </StyledTableCell> */}
                 <StyledTableCell align="center">CREATED DATE</StyledTableCell>
                 <StyledTableCell align="center">
-                <i
-              className={style.add_users}
-              title="ADD USERS"
-              data-toggle="tooltip"
-              onClick={handleOpen}
-            >
-              <i className="material-icons">add_circle</i>
-            </i>
-            <ExportFile
-              excelData={users}
-              fileName="Users"
-              classIcon={style.exp_xcel}
-            ></ExportFile>
-
+                  <i
+                    className={style.add_users}
+                    title="ADD USERS"
+                    data-toggle="tooltip"
+                    onClick={handleAddOpen}
+                  >
+                    <i className="material-icons">add_circle</i>
+                  </i>
+                  <ExportFile
+                    excelData={users}
+                    fileName="Users"
+                    classIcon={style.exp_xcel}
+                  ></ExportFile>
                 </StyledTableCell>
               </TableRow>
             </TableHead>
@@ -184,6 +211,9 @@ const UsersPage = () => {
                     <StyledTableCell align="center">
                       <h5>{index + 1}</h5>
                     </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <h6>{user.user_id}</h6>
+                    </StyledTableCell>
                     <StyledTableCell align="left">
                       <h6>{user.f_name}</h6>
                     </StyledTableCell>
@@ -196,7 +226,7 @@ const UsersPage = () => {
                     <StyledTableCell align="center">
                       <h6>{user.role === 0 ? <b>{"Admin"}</b> : "Users"}</h6>
                     </StyledTableCell>
-                    <StyledTableCell align="center">
+                    {/* <StyledTableCell align="center">
                       <h6>
                         {user.status === 1 ? (
                           <span
@@ -212,7 +242,7 @@ const UsersPage = () => {
                           </span>
                         )}
                       </h6>
-                    </StyledTableCell>
+                    </StyledTableCell> */}
 
                     <StyledTableCell align="center">
                       <h6>{user.date}</h6>
@@ -221,6 +251,7 @@ const UsersPage = () => {
                       <i
                         className={style.edit}
                         title="Edit Users"
+                        onClick={() => handleEditOpen(user.user_id)} 
                         data-toggle="tooltip"
                       >
                         <i className="material-icons">edit</i>
@@ -228,6 +259,7 @@ const UsersPage = () => {
                       <i
                         className={style.delete}
                         title="Delete Users"
+                        onClick={handleDeleteUser}
                         data-toggle="tooltip"
                       >
                         <i className="material-icons">delete</i>
@@ -240,9 +272,14 @@ const UsersPage = () => {
           </Table>
         </TableContainer>
       </div>
-      <Modal open={open} onClose={handleClose}>
+      <Modal open={addOpen} onClose={handleAddClose}>
         <div className={style.modal}>
           <PopAddUser />
+        </div>
+      </Modal>
+      <Modal open={editOpen} onClose={handleEditClose}>
+        <div className={style.modal}>
+          <PopUpdateUser userData={selectedUserData} />
         </div>
       </Modal>
     </>

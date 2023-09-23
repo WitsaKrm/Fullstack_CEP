@@ -3,26 +3,28 @@ import PropTypes from "prop-types";
 import style from "./node.module.css";
 
 const Node = (props) => {
-  const { name, status, src, handleNodeClick } = props;
-  const statusClass = status === "1" ? style.online : style.offline;
+  const statusClass = props.status === "1" ? style.online : style.offline;
 
   return (
-    <div className={style.nodecontainer} onClick={handleNodeClick}>
-      <div className={style.node}>
-        <div className={style.nodeimgcontainer}>
-          <img className={style.nodeimg} src={src} alt="Node Icon" />
-        </div>
-        <div className={style.nodedetails}>
-          <div className={style.details}>
-            <span>{name}</span>
-            <div className={`${style.statusnode} ${statusClass}`}>
-              <span>{status === "1" ? "Online" : "Offline"}</span>
+    <>
+      <button className={style.container} onClick={props.handleNodeClick}>
+        <div className={style.node_container}>
+          <div className={style.node_img}>
+            <img className={style.node_img} src={props.src} alt="Node Icon" />
+          </div>
+
+          <div className={style.nodedetails}>
+            <div className={style.details}>
+              <span>{props.name}</span>
+              <span className={`${style.statusnode} ${statusClass}`}>
+                <span>{props.status === "1" ? "Online" : "Offline"}</span>
+              </span>
+              <div className={style.owner}>123</div>
             </div>
           </div>
-          <div className={style.owner}>{/* Add owner content here */}</div>
         </div>
-      </div>
-    </div>
+      </button>
+    </>
   );
 };
 

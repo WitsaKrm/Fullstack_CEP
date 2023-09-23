@@ -7,7 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import style from "./adduser.module.css"; // Import your CSS module
+import style from "./adduser.module.css";
 
 const USER_REGEX = /^[a-zA-Z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,24}$/;
@@ -57,9 +57,9 @@ const AddUsers = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const v = USER_REGEX.test(nameGroup.userName);
-    const vv = PWD_REGEX.test(nameGroup.passWord);
-    if (!v || !vv) {
+    const U = USER_REGEX.test(nameGroup.userName);
+    const P = PWD_REGEX.test(nameGroup.passWord);
+    if (!U || !P) {
       setNameGroup((prevState) => ({ ...prevState, errMsg: "Invalid Entry" }));
       return;
     }

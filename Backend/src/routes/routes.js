@@ -4,7 +4,7 @@ const userRoutes = (app) => {
   app.get('/users', controllers.users.getUsers);
   app.get('/users/:userId', controllers.users.getUserById);
   app.post('/user', controllers.users.postUser);
-  app.patch('/user', controllers.users.patchUser);
+  app.put('/user', controllers.users.putUser);
   app.delete('/user', controllers.users.deleteUser);
 };
 

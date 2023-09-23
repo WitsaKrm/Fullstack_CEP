@@ -88,9 +88,49 @@ const postUser = async (req, res) => {
     });
 };
 
-const patchUser = async (req, res) => {
-  console.log("patchUser");
+const putUser = async (req, res) => {
+  try {
+    console.log("putUser");
+    const data = req.body;
+
+    // Assuming you have a 'DB' instance for your database connection
+    const sql = `UPDATE ${TB} SET
+      f_name = :f_name,
+      l_name = :l_name,
+      username = :username
+    WHERE user_id = :user_id`;
+
+    // Use parameterized queries to prevent SQL injection
+    const result = await DB.query(sql, {
+      replacements: {
+        f_name: data.f_name,
+        l_name: data.l_name,
+        username: data.username,
+        user_id: data.user_id,
+      },
+      type: DB.QueryTypes.UPDATE,
+    });
+
+    // The result from the query should be an array of affected rows
+    const count = result[1];
+
+    if (count > 0) {
+      console.log(count);
+      // Return a 200 status code for a successful update
+      res
+        .status(200)
+        .json({ status: 200, message: "User updated successfully" });
+    } else {
+      // Return a 404 status code when the user is not found
+      res.status(404).json({ status: 404, message: "User not found" });
+    }
+  } catch (err) {
+    console.error(err);
+    // Return a 500 status code for internal server errors
+    res.status(500).json({ status: 500, message: "Internal Server Error" });
+  }
 };
+
 const deleteUser = async (req, res) => {
   console.log("deleteUser");
 };
@@ -99,6 +139,6 @@ module.exports = {
   getUsers,
   getUserById,
   postUser,
-  patchUser,
+  putUser,
   deleteUser,
 };
