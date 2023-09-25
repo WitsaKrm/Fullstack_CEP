@@ -12,6 +12,10 @@ th {
   color: #000000;
   margin-top: 16px;
 }
+.filter{
+  width: fit-content;
+  height: 32px;
+}
 .col.wrapper {
   display: flex;
   justify-content: flex-end;

@@ -1,11 +1,11 @@
 const controllers = require("../controllers");
 
 const userRoutes = (app) => {
-  app.get('/users', controllers.users.getUsers);
+  app.get('/user', controllers.users.getUsers);
   app.get('/users/:userId', controllers.users.getUserById);
   app.post('/user', controllers.users.postUser);
   app.put('/user', controllers.users.putUser);
-  app.delete('/user', controllers.users.deleteUser);
+  app.delete('/thisuser/:user_id', controllers.users.deleteUser);
 };
 
 const nodeRoutes = (app) => {

@@ -38,3 +38,23 @@ export function APIdataUsers(setUsers, USERS_URL, setLoading) {
 //   // This component doesn't need to render anything, so you can return null.
 //   return null;
 // }
+
+export function APIdeleteUser (USERS_URL, userID, selectedUser){
+  console.log(selectedUser.user_id);
+  useEffect(() => {
+    const DeleteUser = async () => {
+      if(userID === selectedUser.user_id){
+        console.log(userID , selectedUser.user_id);
+        // try {
+        //   const res = await endpoint.delete(USERS_URL);
+  
+        // } catch (error) {
+        //   console.error("Failed to fetch users:", error);
+        // }
+      }
+    };
+
+    DeleteUser();
+  }, [USERS_URL, userID, selectedUser]);
+
+}

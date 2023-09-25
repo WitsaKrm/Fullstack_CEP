@@ -12,15 +12,19 @@ import style from "./editUser.module.css";
 const USERS_URL = "/user";
 const USER_REGEX = /^[a-zA-Z0-9-_]{3,23}$/;
 
-const EditUser = (userData) => {
-  const data = userData.userData;
+const EditUser = ({ userData }) => {
+  const data = userData;
 
   const [nameGroup, setNameGroup] = useState({
-    userName: userData.userName || "",
+    firstName: userData.f_name || "",
+    lastName: userData.l_name || "",
+    userName: userData.username || "",
   });
 
   const [validGroup, setValidGroup] = useState({
-    userName: false,
+    userName: true,
+    firstName: true,
+    lastName: true,
   });
 
   const [focusGroup, setFocusGroup] = useState({
@@ -37,8 +41,11 @@ const EditUser = (userData) => {
   }, []);
 
   useEffect(() => {
-    const result = USER_REGEX.test(nameGroup.userName);
-    setValidGroup((prevState) => ({ ...prevState, userName: result }));
+    const userNameIsValid = USER_REGEX.test(nameGroup.userName);
+    setValidGroup((prevState) => ({
+      ...prevState,
+      userName: userNameIsValid,
+    }));
   }, [nameGroup.userName]);
 
   const userRef = useRef(null);
@@ -62,12 +69,14 @@ const EditUser = (userData) => {
           setSucc(true);
           window.location.reload();
         } else {
+          console.log("else");
           setError("Error updating user: " + response.statusText);
         }
       } else {
         setError("Invalid user_id. Update not performed.");
       }
     } catch (error) {
+      console.log("catch");
       setError("Error updating user: " + error.message);
     }
   };
@@ -91,6 +100,7 @@ const EditUser = (userData) => {
               type="text"
               id="f_name"
               autoComplete="off"
+              // value={nameGroup.firstName}
               onChange={(e) =>
                 setNameGroup((prevState) => ({
                   ...prevState,
@@ -106,6 +116,7 @@ const EditUser = (userData) => {
               type="text"
               id="l_name"
               autoComplete="off"
+              // value={nameGroup.lastName}
               onChange={(e) =>
                 setNameGroup((prevState) => ({
                   ...prevState,
@@ -136,6 +147,7 @@ const EditUser = (userData) => {
               id="username"
               ref={userRef}
               autoComplete="off"
+              // value={nameGroup.userName}
               onChange={(e) =>
                 setNameGroup((prevState) => ({
                   ...prevState,
@@ -175,7 +187,14 @@ const EditUser = (userData) => {
               Letters, Numbers, underscores, hyphens, allowed.
             </p>
 
-            <button className={style.updateBtt} disabled={!validGroup.userName}>
+            <button
+              className={style.updateBtt}
+              disabled={
+                !validGroup.userName ||
+                !validGroup.firstName ||
+                !validGroup.lastName
+              }
+            >
               Update User
             </button>
           </form>

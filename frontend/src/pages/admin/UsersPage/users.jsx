@@ -12,11 +12,13 @@ import style from "./users.module.css";
 import PopAddUser from "../../../components/addusers/addusers";
 import PopUpdateUser from "../../../components/edituser/editUser";
 import ExportFile from "../../../services/fileExport";
+import endpoint from "../../../services/API/axios";
 
-import {APIdataUsers} from "../../../services/API/user.api";
+import {APIdataUsers,APIdeleteUser } from "../../../services/API/user.api";
 import AppHeader from "../../../components/header/app-header";
 
-const USERS_URL = "/users";
+const USERS_URL = "/user";
+const USERSDEL_URL = "/thisuser";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -53,11 +55,44 @@ const UsersPage = () => {
 
   const handleEditOpen = (userID) => {
     console.log(userID);
-    // Find the user object with the matching user_id
     const selectedUser = users.find((user) => user.user_id === userID);
-    setSelectedUserData(selectedUser); // Set the selectedUserData
+    setSelectedUserData(selectedUser);
     setEditOpen(true);
   };
+  const handleDeleteUser = (userID) => {
+    console.log("Deleting user with ID:", userID);
+    const selectedUser = users.find((user) => user.user_id === userID);
+    setSelectedUserData(selectedUser);
+    Swal.fire({
+      title: "ต้องการลบผู้ใช้นี้ ?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        console.log("Confirmed");
+        try {
+          console.log("try");
+          const response = await endpoint.delete(`${USERSDEL_URL}/${userID}`);
+          console.log(endpoint,USERSDEL_URL);
+          console.log(response);
+          if (response.status === 200) {
+            Swal.fire("Deleted!", "ผู้ใช้ถูกลบแล้ว", "success");
+            window.location.reload();
+          } else {
+            Swal.fire("Error", "เกิดข้อผิดพลาดในการลบผู้ใช้", "error");
+          }
+        } catch (error) {
+          console.log("catch");
+          console.error("Error deleting user:", error);
+          Swal.fire("Error", "เกิดข้อผิดพลาดในการลบผู้ใช้", "error");
+        }
+      }
+    });
+  };
+  
+
 
   const handleEditClose = () => {
     setEditOpen(false);
@@ -68,21 +103,6 @@ const UsersPage = () => {
   const handleAddClose = () => {
     setAddOpen(false);
   };
-  const handleDeleteUser = (user) => {
-    Swal.fire({
-      title: "ต้องการลบผู้ใช้นี้ ?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "ยืนยัน",
-      cancelButtonText: "ยกเลิก",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire("Deleted!", "ผู้ใช้ถูกลบแล้ว", "success");
-      }
-    });
-  };
-
-  // Define filteredUsers based on filterFirstName and users state
   const filteredUsers = users.filter((user) => {
     const firstNameMatch = user.f_name
       .toLowerCase()
@@ -129,7 +149,8 @@ const UsersPage = () => {
                   FIRST NAME
                   <br />
                   <input
-                    style={{ width: "100px" }}
+                  className={style.filter}
+                    // style={{ width: "100px" }}
                     type="text"
                     title="Filter by Firstname"
                     value={filterFirstName}
@@ -140,7 +161,8 @@ const UsersPage = () => {
                   LAST NAME
                   <br />
                   <input
-                    style={{ width: "100px" }}
+                  className={style.filter}
+                    // style={{ width: "100px" , height:"30px"}}
                     type="text"
                     title="Filter by Lastname"
                     value={filterLastName}
@@ -151,7 +173,8 @@ const UsersPage = () => {
                   USERNAME
                   <br />
                   <input
-                    style={{ width: "100px" }}
+                  className={style.filter}
+                    // style={{ width: "100px" }}
                     type="text"
                     title="Filter by Username"
                     value={filterUsername}
@@ -162,9 +185,11 @@ const UsersPage = () => {
                   ROLE
                   <br />
                   <input
-                    style={{ width: "100px" }}
+                  className={style.filter}
+                    // style={{ width: "100px" }}
                     type="text"
                     title="(0 = Admin , 1 = Users)"
+                    placeholder="(0 = Admin , 1 = Users)"
                     value={filterRole}
                     onChange={(e) => setFilterRole(e.target.value)}
                   />
@@ -259,7 +284,7 @@ const UsersPage = () => {
                       <i
                         className={style.delete}
                         title="Delete Users"
-                        onClick={handleDeleteUser}
+                       onClick={() => handleDeleteUser(user.user_id)}
                         data-toggle="tooltip"
                       >
                         <i className="material-icons">delete</i>

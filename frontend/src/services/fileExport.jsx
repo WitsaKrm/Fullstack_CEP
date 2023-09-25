@@ -7,9 +7,7 @@ const fileType =
 const fileExtension = "xlsx";
 
 const ExportExcel = ({ excelData, fileName ,classIcon}) => {
-    console.log("ExportExcel");
   const exportToExcel = () => {
-    console.log("exportToExcel");
     const ws = XLSX.utils.json_to_sheet(excelData);
     const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
     const excelBuffer = XLSX.write(wb, {
