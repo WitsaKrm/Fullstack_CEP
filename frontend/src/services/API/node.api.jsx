@@ -66,3 +66,4 @@ export function FetchOneChart (SET,URL,data,ID) {
   };
   fetchOneChart()
 }
+
