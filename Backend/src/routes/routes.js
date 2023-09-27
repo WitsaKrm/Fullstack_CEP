@@ -15,6 +15,9 @@ const nodeRoutes = (app) => {
   app.get('/senser/:nodeId', controllers.nodes.getSenser);
   app.get('/chart_ss/:nodeId', controllers.nodes.getAllSenserChartData);
   app.get('/chart_ss/:nodeId/:data', controllers.nodes.getChartData);
+  app.post('/mode/:nodeId', controllers.nodes.postSetDataMode);
+  app.get('/mode/:nodeId', controllers.nodes.getModeData);
+  app.put('/mode/:nodeId', controllers.nodes.putMode);
 };
 
 module.exports = {
