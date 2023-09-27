@@ -63,6 +63,15 @@ const SensersPage = () => {
 
   const mockData = [
     {
+      nameTH: "ระดับน้ำ",
+      nameEN: "Water Level",
+      svg: svg.waterLevel,
+      key: "level",
+      date: "date",
+      time: "time",
+      unit: "Cm",
+    },
+    {
       nameTH: "อุณหภูมิ",
       nameEN: "Temperature",
       svg: svg.air_temp.default,
@@ -108,7 +117,7 @@ const SensersPage = () => {
           lat={lat}
           lon={lon}
           title={`NODE ${nodeId}`}
-          detail={sensers}
+          detail={`${sensers}`}
         ></Maps>
         <div className="row">
           {mockData.map((data, index) => (
