@@ -45,6 +45,13 @@ const Chart = ({ data }) => {
                 y2="1"
               ></linearGradient>
               <linearGradient
+                id="WL"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              ></linearGradient>
+              <linearGradient
                 id="humi"
                 x1="0"
                 y1="0"
@@ -72,7 +79,7 @@ const Chart = ({ data }) => {
               angle={-45}
               textAnchor="end"
             />
-            <YAxis domain={[0, 100]} tickCount={5} />
+            <YAxis domain={[-30, 100]} tickCount={10} />
             <CartesianGrid strokeDasharray="3 3" />
             <Tooltip />
             <Area
@@ -81,6 +88,13 @@ const Chart = ({ data }) => {
               stroke="	#FF0000"
               fillOpacity={1}
               fill="url(temp)"
+            />
+            <Area
+              type="monotone"
+              dataKey="level"
+              stroke="#000099"
+              fillOpacity={1}
+              fill="url(WL)"
             />
             <Area
               type="monotone"

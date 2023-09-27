@@ -19,7 +19,7 @@ const Maps = (props) => {
         { lon: props.lon, lat: props.lat },
         {
           title: props.title,
-          detail: props.detail+"มาแก้ Detail ด้วย",
+          detail: props.detail,
           weight: window.longdo.OverlayWeight.Top,
         }
       );
