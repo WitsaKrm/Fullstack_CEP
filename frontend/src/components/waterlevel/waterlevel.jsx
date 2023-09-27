@@ -1,37 +1,38 @@
 import React, { useEffect, useState } from "react";
 import style from "./waterlevel.module.css";
 
-const WaterAnimation = ({ waterLevel, maxWaterHeight, date }) => {
+const WaterAnimation = (props) => {
   const [waterHeight, setWaterHeight] = useState(0);
 
   useEffect(() => {
+    console.log(props.data);
     const factors = [-15, -10, -5, 0, 5, 10];
     const targetHeights = [0.063, 0.28, 0.495, 0.715, 0.935, 1.157];
 
-    let targetHeight = maxWaterHeight;
+    let targetHeight = props.maxWaterHeight;
     for (let i = 0; i < factors.length; i++) {
-      if (waterLevel <= factors[i]) {
-        targetHeight = maxWaterHeight * targetHeights[i];
+      if (props.data.current_level <= factors[i]) {
+        targetHeight = props.maxWaterHeight * targetHeights[i];
         break;
       }
     }
 
     setWaterHeight(targetHeight);
-  }, [waterLevel, maxWaterHeight]);
+  }, [props.data.current_level, props.maxWaterHeight]);
 
   return (
     <>
       <div className={style.ani_container}>
         <div className={style.date}>
-          <h5>{date}</h5>
+          <h5>วันที่ {props.data.start_date}, เวลา {props.data.start_time}</h5>
         </div>
         <div className={style.glass}>
           <div
             id="water"
             className={
-              waterLevel === null || waterLevel === ""
+              props.data.current_level === null || props.data.current_level === ""
                 ? style.water
-                : waterLevel < -5
+                : props.data.current_level < -5
                 ? style.waterlow
                 : style.waterhigh
             }

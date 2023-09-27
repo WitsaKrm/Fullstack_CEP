@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import Stack from "@mui/material/Stack";
-import style from "./levelslide.module.css"
+import style from "./levelslide.module.css";
 
 function valuetext(value) {
   return `${value}`;
@@ -38,19 +38,42 @@ const marks = [
 ];
 
 const Wlevel = (props) => {
-  const [sliderValue, setSliderValue] = useState(parseInt(props.level, 10));
-  const {handleSlide} = props;
+  const { data, handleSlide } = props;
+  const [sliderValue, setSliderValue] = useState(
+    parseInt(data.current_level, 10)
+  );
 
   const handleSliderChange = (event, newValue) => {
     setSliderValue(newValue);
     console.log(newValue);
   };
 
-  const handleButtonClick = () => {
+  const handleSetValue = () => {
     if (sliderValue !== undefined) {
+      const dataGroup = {
+        pump_st: "ON",
+        current_level: data.current_level,
+        go_level: sliderValue,
+        mode: "MANUAL",
+        devices_node_id: data.devices_node_id,
+      };
+      console.log(dataGroup);
       console.log("handleButton");
-      // handleAddData(sliderValue, temp, humi);
-      handleSlide(sliderValue);
+      handleSlide(dataGroup);
+    }
+  };
+  const handleCancel = () => {
+    if (sliderValue !== undefined) {
+      const dataGroup = {
+        pump_st: "OFF",
+        current_level: data.current_level,
+        go_level: data.current_level,
+        mode: "NONE",
+        devices_node_id: data.devices_node_id,
+      };
+      console.log(dataGroup);
+      console.log("handleButton");
+      handleSlide(dataGroup);
     }
   };
 
@@ -79,9 +102,12 @@ const Wlevel = (props) => {
         step={5}
       />
       <div className={style.butt_setvl} style={{ margin: "32px 0 0 0" }}>
-        <button className="btn btn-success" onClick={handleButtonClick}>
+        <button className="btn btn-success" onClick={handleSetValue}>
           SET NEW VALUE
         </button>
+        {data.mode === "MANUAL" && (
+          <button className={`${style.btn}  btn btn-danger`} onClick={handleCancel}>Cancel</button>
+        )}
       </div>
     </Box>
   );

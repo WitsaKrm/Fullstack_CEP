@@ -37,4 +37,7 @@
   .hidden {
     display: none;
   }
+  .btn{
+    margin-left: 16px;
+  }
   
