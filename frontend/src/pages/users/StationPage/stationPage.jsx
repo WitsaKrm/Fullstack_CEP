@@ -53,7 +53,13 @@ const StationPage = () => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
+  const toggleManual = () => {
+    setIsManualVisible(!isManualVisible); // Toggle the state
+  };
 
+  const toggleAuto = () => {
+    setIsAutoVisible(!isAutoVisible); // Toggle the state
+  };
   const handleSlide = async (dataGroup) => {
     try {
       const response = await endpoint.put(
@@ -129,24 +135,19 @@ const StationPage = () => {
 return (
     <>
       <AppHeader nameHeader="STATION" />
-      <Maps
-        lat={lat}
-        lon={lon}
-        title={`STATION ${nodeId}`}
-        detail={`ตำแหน่งที่ตั้ง ละติจูดที่${lat}, ลองติจูดที่ ${lon}`}
-      ></Maps>
+
       <div className="container">
         <div className={style.btt}>
           <button
             className={`${style.btn} btn btn-dark`}
-            onClick={handleAutoClick}
+            onClick={() => { handleAutoClick(); toggleAuto(); }}
             disabled={modeData.mode === 'MANUAL'}
           >
             auto
           </button>
           <button
             className={`${style.btn} btn btn-warning`}
-            onClick={handleManualClick}
+            onClick={() => { handleManualClick(); toggleManual(); }}
             disabled={modeData.mode === 'AUTO'}
           >
             manual
@@ -154,12 +155,18 @@ return (
         </div>
         <div className="control">
           {isManualVisible&& (
-            <div className={style.manual}>{manualContent(modeData)}</div>
+            <div className={style.manual} onClick={toggleManual}>{manualContent(modeData)}</div>
           )}
           {isAutoVisible && (
-            <div className={style.auto}>{autoContent()}</div>
+            <div className={style.auto} onClick={toggleAuto}>{autoContent()}</div>
           )}
         </div>
+        <Maps
+        lat={lat}
+        lon={lon}
+        title={`STATION ${nodeId}`}
+        detail={`ตำแหน่งที่ตั้ง ละติจูดที่${lat}, ลองติจูดที่ ${lon}`}
+      ></Maps>
       </div>
     </>
   );

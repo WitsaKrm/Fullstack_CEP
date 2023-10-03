@@ -33,6 +33,7 @@ const SensersPage = () => {
   const lon = queryParams.get("lon");
 
   useEffect(() => {
+    const user = localStorage.getItem("UID")
     async function fetchData() {
       try {
         await FetchSensers(setSensers, SS_URL, `${nodeId}`);
@@ -52,9 +53,9 @@ const SensersPage = () => {
 
   const handleSenserClick = (sensorKey) => {
     FetchOneChart(setOneChart, CHART_SS_URL, `${sensorKey}`, `${nodeId}`);
-    setSelectedSensor(sensorKey);
+    // setSelectedSensor(sensorKey);
     setShowAllChart(false); // Reset to show an individual chart when a sensor is clicked
-    console.log(sensorKey);
+    // console.log(sensorKey);
   };
 
   const handleExportToExcel = () => {
@@ -117,7 +118,7 @@ const SensersPage = () => {
           lat={lat}
           lon={lon}
           title={`NODE ${nodeId}`}
-          detail={`${sensers}`}
+          detail={`ตำแหน่งที่ตั้ง ละติจูดที่${lat}, ลองติจูดที่ ${lon}`}
         ></Maps>
         <div className="row">
           {mockData.map((data, index) => (
