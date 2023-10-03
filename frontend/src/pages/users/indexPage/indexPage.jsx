@@ -3,10 +3,13 @@ import { useHistory } from "react-router-dom";
 import NodeBox from "../../../components/node/node";
 import style from "./indexPage.module.css";
 import AppHeader from "../../../components/header/app-header";
-import { FetchDevicesById } from "../../../services/API/node.api";
+import { SETUIDLocal } from "../../../services/tkEndcoded.service";
+import { FetchDevicesByUid } from "../../../services/API/node.api";
+import { authenticate } from "../../../services/API/auth.api";
 import svg from "../../../assets/svg/svg";
 
 const DEVICE_URL = `/devices`;
+const AUTH_URL = `/authen`;
 
 const IndexPage = () => {
   const history = useHistory();
@@ -15,8 +18,11 @@ const IndexPage = () => {
 
   useEffect(() => {
     async function fetchData() {
+      authenticate(AUTH_URL, history);
+      SETUIDLocal();
+      const UID = localStorage.getItem("UID");
       try {
-        await FetchDevicesById(setDevices, DEVICE_URL);
+        await FetchDevicesByUid(setDevices, DEVICE_URL, UID);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -24,10 +30,19 @@ const IndexPage = () => {
       }
     }
     fetchData();
-  }, []);
+  }, [history]);
 
   const handleNodeClick = (userId, type, nodeId, lat, lon) => {
-    history.push(`/${type}/${nodeId}?lat=${lat}&lon=${lon}`);
+    const encodedUserId = encodeURIComponent(userId);
+    const encodedNodeId = encodeURIComponent(nodeId);
+    const encodedType = encodeURIComponent(type);
+    const encodedLat = encodeURIComponent(lat);
+    const encodedLon = encodeURIComponent(lon);
+    const encodedLatLon = `lat=${encodedLat}&lon=${encodedLon}`;
+    console.log(encodedType);
+    const enURL = `/${encodedType}/${encodedUserId}${encodedNodeId}?${encodedLatLon}`;
+
+    history.push(enURL);
   };
 
   if (isLoading) {
@@ -50,7 +65,7 @@ const IndexPage = () => {
                       status={station.status.toString()}
                       handleNodeClick={() =>
                         handleNodeClick(
-                          station.userId,
+                          station.user_id,
                           "station",
                           station.d_id,
                           station.lat,
@@ -75,7 +90,7 @@ const IndexPage = () => {
                       status={node.status.toString()}
                       handleNodeClick={() =>
                         handleNodeClick(
-                          node.userId,
+                          node.user_id,
                           node.type === "station" ? "station" : "senser",
                           node.d_id,
                           node.lat,
