@@ -13,10 +13,11 @@ export function FetchDevices(SET,URL,ID) {
       };
       fetchNodes()
 }
-export function FetchDevicesById(SET,URL,ID) {
+export function FetchDevicesByUid(SET,URL,ID) {
+  console.log(ID);
     const fetchNodes = async () => {
         try {
-          const res = await API.get(URL);
+          const res = await API.get(`${URL}/${ID}`);
           console.log(res.data);
           console.log(res.data.devices);
           SET(res.data.devices);
