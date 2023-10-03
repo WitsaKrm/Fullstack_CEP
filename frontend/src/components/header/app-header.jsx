@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import style from "./header.module.css";
-import UsersPage from "../../pages/admin/UsersPage/users";
+import UsersPage from "../UsersTable/users";
 
 const AppHeader = (props) => {
   return (
