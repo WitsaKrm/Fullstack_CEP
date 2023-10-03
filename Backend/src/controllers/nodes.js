@@ -7,6 +7,7 @@ const TB_MD = "station_mode";
 
 const getDevices = async (req, res) => {
   console.log("getDevices");
+  console.log(req.body);
   let sql = `SELECT * FROM ${TB_N}`;
   DB.query(sql, { type: DB.QueryTypes.SELECT })
 
@@ -18,19 +19,27 @@ const getDevices = async (req, res) => {
       res.json({ status: "Error", message: err });
     });
 };
-// const getStation = async (req, res) => {
-//   console.log("getStation"); // This logs a message when the function is executed
-//   let sql = `SELECT * FROM ${TB_STT}`;
-//   DB.query(sql, { type: DB.QueryTypes.SELECT })
-//     .then((results) => {
-//       console.log("stations : ", results); // This logs the query results
-//       res.json({ status: "Success", stations: results });
-//     })
-//     .catch((err) => {
-//       console.log(err); // This logs any errors that occur
-//       res.json({ status: "Error", message: err });
-//     });
-// };
+const getDevicesByUID = async (req, res) => {
+  console.log("getDevicesByUID");
+  console.log(req.params);
+  const U_ID = req.params.user_id;
+  const sql ='SELECT * FROM ' + TB_N + ' WHERE user_id = :userId'
+  try {
+    const results = await DB.query(sql
+      ,
+      {
+        replacements: { userId: U_ID },
+        type: DB.QueryTypes.SELECT
+      }
+    );
+
+    console.log("nodes : ", results);
+    res.json({ status: "Success", devices: results });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: "Error", message: "Internal Server Error" });
+  }
+};
 
 const getSenser = async (req, res) => {
   const nodeId = req.params.nodeId;
@@ -240,6 +249,7 @@ const putMode = async (req, res) => {
 };
 module.exports = {
   getDevices,
+  getDevicesByUID,
   postDataNode,
   // getStation,
   getSenser,

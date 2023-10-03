@@ -2,38 +2,15 @@ const DB = require("../../configurations/db");
 const Formatted = require("./formatted.data");
 const TB = "users";
 const { hashmd5 } = require("../../configurations/middlefunc");
+const jwt = require("jsonwebtoken");
+const SECRET = "KRMwitsaKrm";
 
-const getUsers = async (req, res) => {
+async function comparePasswords(dbPassword, enteredPassword) {
+  return dbPassword === enteredPassword;
+}
+const userRegister = async (req, res) => {
   try {
-    console.log("getUsers");
-    const sql = `SELECT * FROM ${TB}`;
-    const results = await DB.query(sql, { type: DB.QueryTypes.SELECT });
-    res.json({ status: "Success", users: results });
-  } catch (err) {
-    console.error("Error fetching users:", err);
-    res.status(500).json({ status: "Error", message: err.message });
-  }
-};
-
-const getUserById = async (req, res) => {
-  try {
-    console.log("getUserById");
-    const userId = req.params.userId;
-    const sql = `SELECT * FROM ${TB} WHERE id = ?`;
-    const results = await DB.query(sql, {
-      type: DB.QueryTypes.SELECT,
-      replacements: [userId],
-    });
-    res.json({ status: "Success", users: results });
-  } catch (err) {
-    console.error("Error fetching user by ID:", err);
-    res.status(500).json({ status: "Error", message: err.message });
-  }
-};
-
-const postUser = async (req, res) => {
-  try {
-    console.log("postUser");
+    console.log("userRegister");
     const data = req.body;
     console.log(data);
     const pwd = hashmd5(data.password); // Assuming this function is defined and working correctly
@@ -83,7 +60,104 @@ const postUser = async (req, res) => {
     res.status(500).json({ status: "Error", message: err.message });
   }
 };
+const userLogin = async (req, res) => {
+  try {
+    console.log("userLogin");
+    const data = req.body;
+    const pwd = hashmd5(data.password); // Replace with the actual function to hash the password using MD5.
+    const username = data.username;
+    console.log(pwd);
+    const sql = `SELECT * FROM ${TB} WHERE username = ?`;
+    const result = await DB.query(sql, {
+      type: DB.QueryTypes.SELECT,
+      replacements: [username],
+    });
 
+    if (result.length === 0) {
+      res.status(404).json({ status: "User not found" });
+      return;
+    }
+
+    console.log(result[0].password);
+
+    const isLogin = await comparePasswords(result[0].password, pwd);
+    console.log({
+      user_id: result[0].user_id,
+      username: result[0].username,
+      fistname: result[0].f_name,
+    });
+    if (isLogin) {
+      const token = jwt.sign(
+        {
+          user_id: result[0].user_id,
+          username: result[0].username,
+          firstname: result[0].f_name,
+          role: result[0].role
+        },
+        SECRET,
+        { expiresIn: "12h" }
+      );
+      res.status(200).json({ status: "Success", msg: "Login success", token });
+    } else {
+      res.status(401).json({ status: "Error",msg:"Password incorrect" });
+    }
+  } catch (err) {
+    console.error("Error Login:", err);
+    res.status(500).json({ status: "Error", message: err.message });
+  }
+};
+const authen = async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const decoded = jwt.verify(token, SECRET);
+    console.log(decoded);
+    res.status(200).json({status:"Verify", decoded})
+  } catch(err) {
+    res.status(401).json({status:"error", msg: err.message})
+  }
+};
+const getUsers = async (req, res) => {
+  try {
+    console.log("getUsers");
+    const sql = `SELECT * FROM ${TB}`;
+    const results = await DB.query(sql, { type: DB.QueryTypes.SELECT });
+    res.json({ status: "Success", users: results });
+  } catch (err) {
+    console.error("Error fetching users:", err);
+    res.status(500).json({ status: "Error", message: err.message });
+  }
+};
+const getUserById = async (req, res) => {
+  try {
+    console.log("getUserById");
+    const userId = req.params.userId;
+    const sql = `SELECT * FROM ${TB} WHERE id = ?`;
+    const results = await DB.query(sql, {
+      type: DB.QueryTypes.SELECT,
+      replacements: [userId],
+    });
+    res.json({ status: "Success", users: results });
+  } catch (err) {
+    console.error("Error fetching user by ID:", err);
+    res.status(500).json({ status: "Error", message: err.message });
+  }
+};
+const getUserByUsername = async (req, res) => {
+  try {
+    console.log("getUserById");
+    console.log(req.params);
+    const username = req.params.username;
+    const sql = `SELECT * FROM ${TB} WHERE username = ?`;
+    const results = await DB.query(sql, {
+      type: DB.QueryTypes.SELECT,
+      replacements: [username],
+    });
+    res.json({ status: "Success", user: results });
+  } catch (err) {
+    console.error("Error fetching user by ID:", err);
+    res.status(500).json({ status: "Error", message: err.message });
+  }
+};
 const putUser = async (req, res) => {
   try {
     console.log("putUser");
@@ -108,9 +182,13 @@ const putUser = async (req, res) => {
 
     if (count > 0) {
       console.log(count);
-      return res.status(200).json({ status: "Success", message: "User updated successfully" });
+      return res
+        .status(200)
+        .json({ status: "Success", message: "User updated successfully" });
     } else {
-      return res.status(404).json({ status: "Error", message: "User not found" });
+      return res
+        .status(404)
+        .json({ status: "Error", message: "User not found" });
     }
   } catch (err) {
     console.error("Error updating user:", err);
@@ -127,7 +205,9 @@ const deleteUser = async (req, res) => {
     // Validate input
     if (!data || !data.user_id) {
       console.log("Invalid input data");
-      return res.status(400).json({ status: 400, message: "Invalid input data" });
+      return res
+        .status(400)
+        .json({ status: 400, message: "Invalid input data" });
     }
 
     const ID = parseInt(data.user_id, 10);
@@ -143,30 +223,38 @@ const deleteUser = async (req, res) => {
 
     const count = result[0].count;
     console.log(count);
-    if(count > 0){
-      await DB.query(sql,{
+    if (count > 0) {
+      await DB.query(sql, {
         replacements: {
           user_id: ID,
         },
         type: DB.QueryTypes.DELETE,
       });
       console.log("User deleted successfully");
-      return res.status(200).json({ status: "Success", message: "User deleted successfully" });
+      return res
+        .status(200)
+        .json({ status: "Success", message: "User deleted successfully" });
     } else {
       console.log("User not found");
-      return res.status(404).json({ status: "Error", message: "User not found" });
+      return res
+        .status(404)
+        .json({ status: "Error", message: "User not found" });
     }
   } catch (err) {
     console.error("Error deleting user:", err);
-    return res.status(500).json({ status: "Error", message: "Internal Server Error" });
+    return res
+      .status(500)
+      .json({ status: "Error", message: "Internal Server Error" });
   }
 };
-
 
 module.exports = {
   getUsers,
   getUserById,
-  postUser,
+  getUserByUsername,
+  userRegister,
+  userLogin,
   putUser,
   deleteUser,
+  authen,
 };
