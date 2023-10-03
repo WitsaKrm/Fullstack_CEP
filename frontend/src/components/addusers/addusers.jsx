@@ -11,7 +11,7 @@ import style from "./adduser.module.css";
 
 const USER_REGEX = /^[a-zA-Z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,24}$/;
-const ADDUSER_URL = "/user";
+const ADDUSER_URL = "/register";
 
 const AddUsers = () => {
   const informations = {
