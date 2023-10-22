@@ -33,14 +33,6 @@ const StationPage = () => {
         await SetModeNewStation(setModeData, MODE_URL, `${nodeId}`);
         await FetchMode(setModeData, MODE_URL, `${nodeId}`); // Await this promise
         setIsLoading(false);
-        // Update isAutoVisible and isManualVisible based on data
-        // if (data.length > 0 && data[0].mode === "MANUAL") {
-        //   setIsManualVisible(true);
-        //   setIsAutoVisible(false);
-        // } else {
-        //   setIsAutoVisible(true);
-        //   setIsManualVisible(false);
-        // }
       } catch (error) {
         console.error("Error fetching data:", error);
         setIsLoading(false);
@@ -48,37 +40,42 @@ const StationPage = () => {
     }
     fetchData();
   }, [nodeId]);
-  
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  const handleStart = (e) => {
+    e.preventDefault();
+    const dataGroup = {
+      pump_st: "ON",
+      current_level: modeData.current_level,
+      go_level: modeData.current_level,
+      st_mode: "AUTO",
+      devices_node_id: modeData.devices_node_id,
+    };
+    console.log(dataGroup);
+    console.log("handleAutoStart");
+    handleMode(dataGroup);
+  };
+  const handleCancel = (e) => {
+    e.preventDefault();
+    const dataGroup = {
+      pump_st: "OFF",
+      current_level: modeData.current_level,
+      go_level: modeData.current_level,
+      st_mode: "NONE",
+      devices_node_id: modeData.devices_node_id,
+    };
+    console.log(modeData);
+    console.log(dataGroup);
+    console.log("handleAutoCancel");
+    handleMode(dataGroup);
+  };
   const toggleManual = () => {
-    setIsManualVisible(!isManualVisible); // Toggle the state
+    setIsManualVisible(!isManualVisible);
   };
 
   const toggleAuto = () => {
-    setIsAutoVisible(!isAutoVisible); // Toggle the state
+    setIsAutoVisible(!isAutoVisible);
   };
-  const handleSlide = async (dataGroup) => {
-    try {
-      const response = await endpoint.put(
-        `${MODE_URL}/${modeData.devices_node_id}`,
-        dataGroup
-      );
-      console.log(response);
-      if (response.status === 200) {
-        setSucc(true);
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
-      } else {
-        setError("Error updating Mode: " + response.statusText);
-      }
-    } catch (error) {
-      setError("Error updating Mode: " + error.message);
-    }
-  };
+
   const autoContent = () => (
     <>
       <h1>AUTO mode</h1>
@@ -108,8 +105,15 @@ const StationPage = () => {
         }
       />
       <div className={style.btt}>
-        <div className={`btn btn-primary ${style.btn}`}>เริ่มการทำงาน</div>
-        <div className={`btn btn-danger ${style.btn}`}>ยกเลิก</div>
+        {modeData.st_mode === "AUTO" ? (
+          <div className={`btn btn-danger ${style.btn}`} onClick={handleCancel}>
+            ยกเลิกการทำงาน
+          </div>
+        ) : (
+          <div className={`btn btn-primary ${style.btn}`} onClick={handleStart}>
+            เริ่มการทำงาน
+          </div>
+        )}
       </div>
     </>
   );
@@ -118,11 +122,29 @@ const StationPage = () => {
       <h1>MANUAL</h1>
       <div className={style.box_manual}>
         <WaterLevel data={modeData} maxWaterHeight={300}></WaterLevel>
-        <LevelSlide data={modeData} handleSlide={handleSlide}></LevelSlide>
+        <LevelSlide data={modeData} handleMode={handleMode}></LevelSlide>
       </div>
     </>
   );
-
+  const handleMode = async (dataGroup) => {
+    try {
+      const response = await endpoint.put(
+        `${MODE_URL}/${modeData.devices_node_id}`,
+        dataGroup
+      );
+      console.log(response);
+      if (response.status === 200) {
+        setSucc(true);
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      } else {
+        setError("Error updating Mode: " + response.statusText);
+      }
+    } catch (error) {
+      setError("Error updating Mode: " + error.message);
+    }
+  };
   const handleAutoClick = () => {
     setIsAutoVisible(true);
     setIsManualVisible(false);
@@ -131,47 +153,58 @@ const StationPage = () => {
     setIsAutoVisible(false);
     setIsManualVisible(true);
   };
-  console.log(modeData);
-return (
+  return (
     <>
-      <AppHeader nameHeader="STATION" />
+      <AppHeader header={`STATION  ${nodeId}`} />
 
       <div className="container">
         <div className={style.btt}>
           <button
             className={`${style.btn} btn btn-dark`}
-            onClick={() => { handleAutoClick(); toggleAuto(); }}
-            disabled={modeData.mode === 'MANUAL'}
+            onClick={() => {
+              handleAutoClick();
+              toggleAuto();
+            }}
+            disabled={modeData.st_mode === "MANUAL"}
           >
             auto
           </button>
           <button
             className={`${style.btn} btn btn-warning`}
-            onClick={() => { handleManualClick(); toggleManual(); }}
-            disabled={modeData.mode === 'AUTO'}
+            onClick={() => {
+              handleManualClick();
+              toggleManual();
+            }}
+            disabled={modeData.st_mode === "AUTO"}
           >
             manual
           </button>
         </div>
         <div className="control">
-          {isManualVisible&& (
-            <div className={style.manual} onClick={toggleManual}>{manualContent(modeData)}</div>
-          )}
-          {isAutoVisible && (
-            <div className={style.auto} onClick={toggleAuto}>{autoContent()}</div>
+          {modeData.st_mode === "MANUAL" ? (
+            <>{<div className={style.manual}>{manualContent(modeData)}</div>}</>
+          ) : modeData.st_mode === "AUTO" ? (
+            <>{<div className={style.auto}>{autoContent()}</div>}</>
+          ) : (
+            <>
+              {isManualVisible && (
+                <div className={style.manual}>{manualContent(modeData)}</div>
+              )}
+              {isAutoVisible && (
+                <div className={style.auto}>{autoContent()}</div>
+              )}
+            </>
           )}
         </div>
         <Maps
-        lat={lat}
-        lon={lon}
-        title={`STATION ${nodeId}`}
-        detail={`ตำแหน่งที่ตั้ง ละติจูดที่${lat}, ลองติจูดที่ ${lon}`}
-      ></Maps>
+          lat={lat}
+          lon={lon}
+          title={`STATION ${nodeId}`}
+          detail={`ตำแหน่งที่ตั้ง ละติจูดที่${lat}, ลองติจูดที่ ${lon}`}
+        ></Maps>
       </div>
     </>
   );
 };
 
 export default StationPage;
-
-

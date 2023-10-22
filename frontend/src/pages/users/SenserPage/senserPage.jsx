@@ -23,7 +23,7 @@ const SensersPage = () => {
   const [chartSensers, setChartSensers] = useState([]);
   const [oneChart, setOneChart] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedSensor, setSelectedSensor] = useState();
+  const [selectedSensor, setSelectedSensor] = useState(false);
   const [showAllChart, setShowAllChart] = useState(false); // State to track "All" button click
 
   // Use useLocation to access query parameters
@@ -33,7 +33,7 @@ const SensersPage = () => {
   const lon = queryParams.get("lon");
 
   useEffect(() => {
-    const user = localStorage.getItem("UID")
+    const user = localStorage.getItem("UID");
     async function fetchData() {
       try {
         await FetchSensers(setSensers, SS_URL, `${nodeId}`);
@@ -53,13 +53,30 @@ const SensersPage = () => {
 
   const handleSenserClick = (sensorKey) => {
     FetchOneChart(setOneChart, CHART_SS_URL, `${sensorKey}`, `${nodeId}`);
-    // setSelectedSensor(sensorKey);
-    setShowAllChart(false); // Reset to show an individual chart when a sensor is clicked
-    // console.log(sensorKey);
+    setSelectedSensor(sensorKey);
+    setShowAllChart(false);
   };
 
+  // const handleExportToExcel = () => {
+  //   console.log(`Data_node_${nodeId}`, chartSensers);
+  // };
   const handleExportToExcel = () => {
-    console.log(`Data_node_${nodeId}`, chartSensers);
+    if (selectedSensor) {
+      const selectedSensorData = chartSensers.filter(
+        (data) => data.senserKey === selectedSensor
+      );
+      console.log(selectedSensorData);
+      if (selectedSensorData.length > 0) {
+        console.log(
+          `Data_node_${nodeId}_${selectedSensor}`,
+          selectedSensorData
+        );
+      } else {
+        console.log("No data found for the selected sensor.");
+      }
+    } else {
+      console.log("Please select a sensor before exporting.");
+    }
   };
 
   const mockData = [
@@ -112,7 +129,7 @@ const SensersPage = () => {
 
   return (
     <>
-      <AppHeader nameHeader={`NODE Sensers`} />
+      <AppHeader header={`NODE Sensers  ${nodeId}`} />
       <div className={`container-fluid ${style.sensersPageContainer}`}>
         <Maps
           lat={lat}
@@ -140,7 +157,7 @@ const SensersPage = () => {
           <div className={style.butt}>
             <div
               className={`btn btn-primary ${style.btn}`}
-              onClick={() => setShowAllChart(true)}
+              onClick={() => {setShowAllChart(true) ; setSelectedSensor('allSensors')}}
             >
               All
             </div>
@@ -149,7 +166,7 @@ const SensersPage = () => {
                 classIcon={style.exp_xcel}
                 className="btn btn-dark"
                 excelData={chartSensers}
-                fileName={`Data_node_${nodeId}`}
+                fileName={`Data_node_${nodeId}_${selectedSensor ?? 'allSensors'}`}
                 onClick={handleExportToExcel}
               ></ExportExcel>
             </div>
