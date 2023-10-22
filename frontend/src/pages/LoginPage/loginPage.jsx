@@ -17,7 +17,7 @@ const LoginPage = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     try {
       const res = await endpoint.post(LOGIN_URL, {
         username: userName,
@@ -33,7 +33,7 @@ const LoginPage = () => {
           title: "กำลังเข้าสู่ระบบ",
           icon: "success",
           showConfirmButton: false,
-          timer: 500,
+          timer: 700,
         }).then(() => {
           localStorage.setItem("token", res.data.token);
           SETUIDLocal();
@@ -48,14 +48,22 @@ const LoginPage = () => {
       }
     } catch (err) {
       console.error(err);
-      setErrMsg("Password incorrect : " + err.message);
+  
+      if (err.response && err.response.status === 404) {
+        setErrMsg(" : ชื่อผู้ใช้ไม่ถูกต้อง");
+      } else if (err.response && err.response.status === 401) {
+        setErrMsg(" : รหัสผ่านไม่ถูกต้อง");
+      } else {
+        setErrMsg(err.message);
+      }
     }
     console.log(userName, userPwd);
   };
+  
 
   return (
     <>
-      <AppHeader />
+      <AppHeader header={`LoginPage : กรุณาเข้าสู่ระบบเพื่อเข้าใช้งาน`}/>
       <section>
         <h1>Login</h1>
         <form onSubmit={handleLogin}>
