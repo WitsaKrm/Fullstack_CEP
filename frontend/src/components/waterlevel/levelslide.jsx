@@ -38,7 +38,7 @@ const marks = [
 ];
 
 const Wlevel = (props) => {
-  const { data, handleSlide } = props;
+  const { data, handleMode } = props;
   const [sliderValue, setSliderValue] = useState(
     parseInt(data.current_level, 10)
   );
@@ -48,32 +48,34 @@ const Wlevel = (props) => {
     console.log(newValue);
   };
 
-  const handleSetValue = () => {
+  const handleSetValue = (e) => {
+    e.preventDefault();
     if (sliderValue !== undefined) {
       const dataGroup = {
         pump_st: "ON",
         current_level: data.current_level,
         go_level: sliderValue,
-        mode: "MANUAL",
+        st_mode: "MANUAL",
         devices_node_id: data.devices_node_id,
       };
       console.log(dataGroup);
-      console.log("handleButton");
-      handleSlide(dataGroup);
+      console.log("handlManualSetValue");
+      handleMode(dataGroup);
     }
   };
-  const handleCancel = () => {
+  const handleCancel = (e) => {
+    e.preventDefault();
     if (sliderValue !== undefined) {
       const dataGroup = {
         pump_st: "OFF",
         current_level: data.current_level,
         go_level: data.current_level,
-        mode: "NONE",
+        st_mode: "NONE",
         devices_node_id: data.devices_node_id,
       };
       console.log(dataGroup);
-      console.log("handleButton");
-      handleSlide(dataGroup);
+      console.log("handleManualCancel");
+      handleMode(dataGroup);
     }
   };
 
@@ -100,13 +102,20 @@ const Wlevel = (props) => {
         min={-15}
         max={10}
         step={5}
+        // disabled={sliderValue <= 0 }
       />
+
       <div className={style.butt_setvl} style={{ margin: "32px 0 0 0" }}>
         <button className="btn btn-success" onClick={handleSetValue}>
-          SET NEW VALUE
+          ตั้งค่าระดับน้ำ
         </button>
-        {data.mode === "MANUAL" && (
-          <button className={`${style.btn}  btn btn-danger`} onClick={handleCancel}>Cancel</button>
+        {data.st_mode === "MANUAL" && (
+          <button
+            className={`${style.btn}  btn btn-danger`}
+            onClick={handleCancel}
+          >
+            ยกเลิกการทำงาน
+          </button>
         )}
       </div>
     </Box>
