@@ -1,6 +1,5 @@
 import React from "react";
 import style from "./chart.module.css";
-
 import {
   AreaChart,
   Area,
@@ -12,19 +11,19 @@ import {
 } from "recharts";
 
 const Chart = ({ data }) => {
-  console.log(data);
+  // console.log(data);
   const formattedData = data.map((item) => ({
     ...item,
     dateTime: `${item.date} ${item.time}`,
   }));
-  console.log(formattedData);
+  // console.log(formattedData);
   return (
     <>
       <div className={style["chart-container"]}>
-        <div className="filter">
+        <div className={style.filter}>
           
         </div>
-        <div className="chart"></div>
+        <div className={style.chart}></div>
         <ResponsiveContainer
           className={style["responsive-container"]}
           width="95%"
