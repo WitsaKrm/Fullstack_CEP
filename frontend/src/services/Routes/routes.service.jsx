@@ -36,18 +36,19 @@ import UsersPage from "../../components/UsersTable/users";
 
 const Routes = () => {
   const userRole = getUserRole();
-  console.log("User Role:", userRole);
+  console.log("User Role :", userRole);
   if(userRole === 0){
 console.log(userRole);
   }
+
   return (
     <Switch>
-      <Route
+      <ProtectedRoute
         exact
         path="/"
         component={() => (userRole === 0 ? <AdminPage/> : <IndexPage/>)}
       />
-      <ProtectedRoute path="/users" component={UsersPage} isAdmin={true} />
+      {/* // <ProtectedRoute path="/users" component={UsersPage} isAdmin={true} /> */}
       <Route path="/login" component={LoginPage} />
       <ProtectedRoute path="/senser/:userId:nodeId" component={SensersPage} />
       <ProtectedRoute path="/station/:userId:nodeId" component={StationPage} />
