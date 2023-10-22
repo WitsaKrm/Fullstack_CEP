@@ -32,7 +32,7 @@ const AdminPage = () => {
 
   return (
     <>
-      <AppHeader />
+      <AppHeader header={"ADMIN"} />
       <div className={style.container}>
         <button onClick={toggleUsersContent}>USERS</button>
         <button onClick={toggleUserNodeContent}>USER NODE</button>
