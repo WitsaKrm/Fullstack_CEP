@@ -1,4 +1,4 @@
-// Import jwtDecode only once at the beginning of your file
+
 import jwtDecode from "jwt-decode";
 
 export function decodedToken(SET) {
@@ -22,7 +22,6 @@ export function SETUIDLocal() {
     
     if (decodedToken && decodedToken.user_id) {
       localStorage.setItem('UID', decodedToken.user_id);
-    //   const UID = localStorage.getItem('UID');
     } else {
       console.error("Invalid decoded token:", decodedToken);
     }
