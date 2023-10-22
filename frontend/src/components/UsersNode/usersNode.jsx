@@ -4,8 +4,14 @@ const userNodes = (props) => {
 
     return (
         <>
-        <div className={style.container}></div>
-        </>
+        <div className={style.title}>
+        <div className="row">
+          <h2 className="col">
+            Node Users <b>Management</b>
+          </h2>
+        </div>
+      </div>
+      </>
     )
 }
 export default userNodes;

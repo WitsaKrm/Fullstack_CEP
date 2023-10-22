@@ -1,4 +1,5 @@
-import * as React from "react";
+import React from "react";
+import {useState} from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -14,7 +15,7 @@ import PopUpdateUser from "../edituser/editUser";
 import ExportFile from "../../services/fileExport";
 import endpoint from "../../services/API/axios";
 
-import {APIdataUsers,APIdeleteUser } from "../../services/API/user.api";
+import { APIdataUsers, APIdeleteUser } from "../../services/API/user.api";
 import AppHeader from "../header/app-header";
 
 // const USERS_URL = "/user";
@@ -40,20 +41,37 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const UsersPage = (props) => {
-  const users = props.users
-  const loading = props.loading
-  const [addOpen, setAddOpen] = React.useState(false);
-  const [editOpen, setEditOpen] = React.useState(false);
+  const users = props.users;
+  const loading = props.loading;
+  const [addOpen, setAddOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
   // const [loading, setLoading] = React.useState(true);
-  const [filterFirstName, setFilterFirstName] = React.useState("");
-  const [filterLastName, setFilterLastName] = React.useState("");
-  const [filterUsername, setFilterUsername] = React.useState("");
-  const [filterRole, setFilterRole] = React.useState("");
-  const [filterStatus, setFilterStatus] = React.useState("");
-  const [filterCreatedDate, setFilterCreatedDate] = React.useState("");
+  const [filterFirstName, setFilterFirstName] = useState("");
+  const [filterLastName, setFilterLastName] = useState("");
+  const [filterUsername, setFilterUsername] = useState("");
+  const [filterRole, setFilterRole] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
+  const [selectedUserData, setSelectedUserData] = useState(null);
+  const [expandedUserId, setExpandedUserId] = useState(null);
 
-  const [selectedUserData, setSelectedUserData] = React.useState(null);
 
+  const handleAbout = (userID) => {
+    setExpandedUserId((prevUserId) => (prevUserId === userID ? null : userID));
+  };
+  function AccordionContent({ user }) {
+    console.log(user);
+    console.log(user.user_id);
+    return (
+      <StyledTableRow>
+        <StyledTableCell colSpan={8}>
+          <div>
+            
+            <h1>User ID: {user.user_id} </h1>
+          </div>
+        </StyledTableCell>
+      </StyledTableRow>
+    );
+  }  
   const handleEditOpen = (userID) => {
     console.log(userID);
     const selectedUser = users.find((user) => user.user_id === userID);
@@ -76,7 +94,7 @@ const UsersPage = (props) => {
         try {
           console.log("try");
           const response = await endpoint.delete(`${USERSDEL_URL}/${userID}`);
-          console.log(endpoint,USERSDEL_URL);
+          console.log(endpoint, USERSDEL_URL);
           console.log(response);
           if (response.status === 200) {
             Swal.fire("Deleted!", "ผู้ใช้ถูกลบแล้ว", "success");
@@ -119,7 +137,7 @@ const UsersPage = (props) => {
       lastNameMatch &&
       usernameMatch &&
       roleMatch &&
-      statusMatch 
+      statusMatch
     );
   });
 
@@ -146,7 +164,7 @@ const UsersPage = (props) => {
                   FIRST NAME
                   <br />
                   <input
-                  className={style.filter}
+                    className={style.filter}
                     // style={{ width: "100px" }}
                     type="text"
                     title="Filter by Firstname"
@@ -158,7 +176,7 @@ const UsersPage = (props) => {
                   LAST NAME
                   <br />
                   <input
-                  className={style.filter}
+                    className={style.filter}
                     // style={{ width: "100px" , height:"30px"}}
                     type="text"
                     title="Filter by Lastname"
@@ -170,7 +188,7 @@ const UsersPage = (props) => {
                   USERNAME
                   <br />
                   <input
-                  className={style.filter}
+                    className={style.filter}
                     // style={{ width: "100px" }}
                     type="text"
                     title="Filter by Username"
@@ -182,7 +200,7 @@ const UsersPage = (props) => {
                   ROLE
                   <br />
                   <input
-                  className={style.filter}
+                    className={style.filter}
                     // style={{ width: "100px" }}
                     type="text"
                     title="(0 = Admin , 1 = Users)"
@@ -229,26 +247,27 @@ const UsersPage = (props) => {
                 </TableRow>
               ) : (
                 filteredUsers.map((user, index) => (
-                  <StyledTableRow key={index}>
-                    <StyledTableCell align="center">
-                      <h5>{index + 1}</h5>
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      <h6>{user.user_id}</h6>
-                    </StyledTableCell>
-                    <StyledTableCell align="left">
-                      <h6>{user.f_name}</h6>
-                    </StyledTableCell>
-                    <StyledTableCell align="left">
-                      <h6>{user.l_name}</h6>
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      <h6>{user.username}</h6>
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      <h6>{user.role === 0 ? <b>{"Admin"}</b> : "Users"}</h6>
-                    </StyledTableCell>
-                    {/* <StyledTableCell align="center">
+                  <React.Fragment key={index}>
+                    <StyledTableRow >
+                      <StyledTableCell align="center">
+                        <h5>{index + 1}</h5>
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <h6>{user.user_id}</h6>
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        <h6>{user.f_name}</h6>
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        <h6>{user.l_name}</h6>
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <h6>{user.username}</h6>
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <h6>{user.role === 0 ? <b>{"Admin"}</b> : "Users"}</h6>
+                      </StyledTableCell>
+                      {/* <StyledTableCell align="center">
                       <h6>
                         {user.status === 1 ? (
                           <span
@@ -266,28 +285,40 @@ const UsersPage = (props) => {
                       </h6>
                     </StyledTableCell> */}
 
-                    <StyledTableCell align="center">
-                      <h6>{user.date}</h6>
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      <i
-                        className={style.edit}
-                        title="Edit Users"
-                        onClick={() => handleEditOpen(user.user_id)} 
-                        data-toggle="tooltip"
-                      >
-                        <i className="material-icons">edit</i>
-                      </i>
-                      <i
-                        className={style.delete}
-                        title="Delete Users"
-                       onClick={() => handleDeleteUser(user.user_id)}
-                        data-toggle="tooltip"
-                      >
-                        <i className="material-icons">delete</i>
-                      </i>
-                    </StyledTableCell>
-                  </StyledTableRow>
+                      <StyledTableCell align="center">
+                        <h6>{user.date}</h6>
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <i
+                          className={style.edit}
+                          title="Edit Users"
+                          onClick={() => handleEditOpen(user.user_id)}
+                          data-toggle="tooltip"
+                        >
+                          <i className="material-icons">edit</i>
+                        </i>
+                        <i
+                          className={style.delete}
+                          title="Delete Users"
+                          onClick={() => handleDeleteUser(user.user_id)}
+                          data-toggle="tooltip"
+                        >
+                          <i className="material-icons">delete</i>
+                        </i>
+                        <i
+                          className={style.edit}
+                          title="Edit"
+                          onClick={() => handleAbout(user.user_id)}
+                          data-toggle="tooltip"
+                        >
+                          <i className="material-icons">edit</i>
+                        </i>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                    {expandedUserId === user.user_id && (
+                      <AccordionContent user={user} />
+                    )}
+                  </React.Fragment>
                 ))
               )}
             </TableBody>
