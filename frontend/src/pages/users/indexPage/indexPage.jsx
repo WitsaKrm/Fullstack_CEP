@@ -51,7 +51,7 @@ const IndexPage = () => {
 
   return (
     <>
-      <AppHeader nameHeader="ComputerEng PROJECT" />
+      <AppHeader header="ComputerEng PROJECT" />
       <div className={`container-fluid ${style.indexPageContainer}`}>
         <div className="row">
           {devices.map(
