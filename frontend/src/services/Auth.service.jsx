@@ -11,9 +11,9 @@ export function isAuthenticated() {
     if (token) {
       const decodedToken = jwtDecode(token);
       console.log(decodedToken.role);
-      return decodedToken.role; // Default to "user" if role is not present
+      return decodedToken.role;
     }
-    return " token is not found"; // Return "user" if no token is found
+    return " token is not found"; 
   }
 
   
