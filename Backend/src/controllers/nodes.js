@@ -58,8 +58,8 @@ const postDataNode = async (req, res) => {
   console.log("postDataNode");
   const data = req.body;
   console.log(data);
-  const Date = await Formatted.fomattdDate(); // Call the fomattdDate function to get the formatted date
-  const Time = await Formatted.fomattdTime(); // Call the fomattdTime function to get the formatted time
+  const Date = await Formatted.fomattdDate();
+  const Time = await Formatted.fomattdTime(); 
   console.log(Date, Time);
 
   const insertsql = `INSERT INTO ${TB_SS} (level, air_temp, air_humi, soil_mois, light, date, time, node_id) VALUES (?,?, ?, ?, ?, ?, ?, ?)`;
@@ -212,7 +212,7 @@ const putMode = async (req, res) => {
       pump_st = :pump_st,
       current_level = :current_level,
       go_level = :go_level,
-      mode = :mode,
+      st_mode = :st_mode,
       start_date = :start_date,
       start_time = :start_time
       WHERE devices_node_id = :devices_node_id`;
@@ -222,7 +222,7 @@ const putMode = async (req, res) => {
         pump_st: data.pump_st,
         current_level: data.current_level,
         go_level: data.go_level,
-        mode: data.mode,
+        st_mode: data.st_mode,
         start_date: date,
         start_time: time,
         devices_node_id: data.devices_node_id,
