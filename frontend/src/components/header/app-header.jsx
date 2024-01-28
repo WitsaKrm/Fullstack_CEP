@@ -39,12 +39,12 @@ const AppHeader = (props) => {
           <div className={style.navlink}>
             <a href="/">{props.header}</a>
           </div>
-          <div className={style.logout}>
+        </div>
+        <div className={style.logout}>
             <button className={style.logoutButton} onClick={handleLogout}>
               {renderLogoutButton}
             </button>
           </div>
-        </div>
       </div>
     </header>
   );

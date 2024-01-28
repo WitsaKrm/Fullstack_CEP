@@ -42,8 +42,8 @@ const userRegister = async (req, res) => {
           currentDate,
           data.username,
           pwd,
-          data.f_Name, // Corrected key case
-          data.l_Name, // Corrected key case
+          data.f_Name,
+          data.l_Name,
           data.role,
           1,
         ],
@@ -64,7 +64,7 @@ const userLogin = async (req, res) => {
   try {
     console.log("userLogin");
     const data = req.body;
-    const pwd = hashmd5(data.password); // Replace with the actual function to hash the password using MD5.
+    const pwd = hashmd5(data.password);
     const username = data.username;
     console.log(pwd);
     const sql = `SELECT * FROM ${TB} WHERE username = ?`;

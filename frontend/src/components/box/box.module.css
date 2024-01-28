@@ -1,7 +1,6 @@
-
 .box {
-    margin: 8px 0;
-    padding: 16px 16px;
+  margin: 8px 0;
+  padding: 16px 16px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,12 +13,12 @@
 
 @media (max-width: 768px) {
   .box {
-    height: 150px;
+    height: fit-content;
   }
 }
 
 @media (max-width: 576px) {
   .box {
-    height: 100px;
+    height: fit-content;
   }
 }

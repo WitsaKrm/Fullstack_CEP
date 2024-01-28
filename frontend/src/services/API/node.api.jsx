@@ -1,7 +1,7 @@
 
 import API from "../../services/API/axios";
 
-export function FetchDevices(SET,URL,ID) {
+export function FetchDevices(SET,URL) {
     const fetchNodes = async () => {
         try {
           const res = await API.get(URL);

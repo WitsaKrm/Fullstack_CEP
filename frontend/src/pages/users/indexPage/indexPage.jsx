@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import NodeBox from "../../../components/node/node";
+import LineNotifyButton from "../../../components/Notify_btn/notify_button";
 import style from "./indexPage.module.css";
 import AppHeader from "../../../components/header/app-header";
 import { SETUIDLocal } from "../../../services/tkEndcoded.service";
 import { FetchDevicesByUid } from "../../../services/API/node.api";
 import { authenticate } from "../../../services/API/auth.api";
 import svg from "../../../assets/svg/svg";
+
+
 
 const DEVICE_URL = `/devices`;
 const AUTH_URL = `/authen`;
@@ -53,7 +56,11 @@ const IndexPage = () => {
     <>
       <AppHeader header="ComputerEng PROJECT" />
       <div className={`container-fluid ${style.indexPageContainer}`}>
+      <div className={style.LineNotifyButton}>
+      <LineNotifyButton src={svg.line.default} />
+      </div>
         <div className="row">
+
           {devices.map(
             (station) =>
               station.type === "station" && (

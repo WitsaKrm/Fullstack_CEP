@@ -1,6 +1,8 @@
 .headercontainer {
   background-color: #2e572a;
   margin-bottom: 24px;
+  justify-content: space-between; /* This will create space between navlink and logout */
+  align-items: center; /* Vertically center the content */
 }
 
 .header {
@@ -17,14 +19,13 @@
 }
 .headerNav {
   display: flex;
-  justify-content: space-between; /* Corrected property value */
   align-items: center;
 }
 .navlink a {
   margin: 0px 8px;
-  padding: 8px 16px; /* Add padding to make links more clickable */
-  border-radius: 4px; /* Add border-radius for a button-like appearance */
-  transition: background-color 0.2s; /* Add a smooth hover effect */
+  padding: 8px 16px; 
+  border-radius: 4px;
+  transition: background-color 0.2s;
 }
 
 .logoutButton {
@@ -34,13 +35,19 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  font-size: 18px; /* Adjust the font size */
-  margin-left: 16px; /* Add spacing between the text and icon */
+  font-size: 18px;
+  margin-left: 16px;
   transition: background-color 0.2s;
 }
 .logoutButton :hover {
-  background-color: #4a813c; /* Change the background color on hover */
-  color: white; /* Change text color on hover */
+  background-color: #4a813c;
+  color: white; 
 }
 
-/* Add styles for FontAwesome icon if needed */
+.navlink {
+  margin-right: auto; /* Push the navlink to the left as much as possible */
+}
+
+.logout {
+  margin-left: auto; /* Push the logout to the right as much as possible */
+}

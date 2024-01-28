@@ -23,15 +23,12 @@ const getDevicesByUID = async (req, res) => {
   console.log("getDevicesByUID");
   console.log(req.params);
   const U_ID = req.params.user_id;
-  const sql ='SELECT * FROM ' + TB_N + ' WHERE user_id = :userId'
+  const sql = "SELECT * FROM " + TB_N + " WHERE user_id = :userId";
   try {
-    const results = await DB.query(sql
-      ,
-      {
-        replacements: { userId: U_ID },
-        type: DB.QueryTypes.SELECT
-      }
-    );
+    const results = await DB.query(sql, {
+      replacements: { userId: U_ID },
+      type: DB.QueryTypes.SELECT,
+    });
 
     console.log("nodes : ", results);
     res.json({ status: "Success", devices: results });
@@ -58,8 +55,9 @@ const postDataNode = async (req, res) => {
   console.log("postDataNode");
   const data = req.body;
   console.log(data);
+  console.log(data);
   const Date = await Formatted.fomattdDate();
-  const Time = await Formatted.fomattdTime(); 
+  const Time = await Formatted.fomattdTime();
   console.log(Date, Time);
 
   const insertsql = `INSERT INTO ${TB_SS} (level, air_temp, air_humi, soil_mois, light, date, time, node_id) VALUES (?,?, ?, ?, ?, ?, ?, ?)`;
@@ -166,7 +164,7 @@ const postSetDataMode = async (req, res) => {
     //     code: "200",
     //     message: "Node Data added successfully",
     //   });
-    // } 
+    // }
     else {
       console.log("มีแล้วจ้า");
       res.json({

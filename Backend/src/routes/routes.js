@@ -24,7 +24,12 @@ const nodeRoutes = (app) => {
   app.put('/mode/:nodeId', controllers.nodes.putMode);
 };
 
+const lineRoutes = (app) => {
+  app.get('/line/redirect', controllers.lineredirect.redirect);
+  app.post('/line/notify', controllers.lineredirect.notify)
+};
 module.exports = {
   userRoutes,
-  nodeRoutes
+  nodeRoutes,
+  lineRoutes
 };

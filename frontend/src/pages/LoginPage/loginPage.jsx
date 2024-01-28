@@ -5,7 +5,8 @@ import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import endpoint from "../../services/API/axios";
 import AddUsers from "../../components/addusers/addusers";
-import { SETUIDLocal } from "../../services/tkEndcoded.service";
+import { SETUIDLocal ,decodedToken} from "../../services/tkEndcoded.service";
+import { getUserRole } from "../../services/Auth.service";
 const LOGIN_URL = "/login";
 const USER = "/user";
 
@@ -14,6 +15,7 @@ const LoginPage = () => {
   const [userName, setUserName] = useState("");
   const [userPwd, setUserPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [role, SETRole] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -35,8 +37,11 @@ const LoginPage = () => {
           showConfirmButton: false,
           timer: 700,
         }).then(() => {
+          console.log("token", res.data.token);
           localStorage.setItem("token", res.data.token);
           SETUIDLocal();
+          const role = getUserRole()
+          console.log(role);
           history.push({
             pathname: `/`,
           });
@@ -92,7 +97,7 @@ const LoginPage = () => {
           </button>
         </form>
       </section>
-      <AddUsers />
+      {/* <AddUsers /> */}
     </>
   );
 };

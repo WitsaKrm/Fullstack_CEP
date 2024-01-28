@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import style from "./node.module.css";
 
 const Node = (props) => {
+  console.log(props);
   const statusClass = props.status === "1" ? style.online : style.offline;
 
   return (
@@ -10,12 +11,12 @@ const Node = (props) => {
       <button className={style.container} onClick={props.handleNodeClick}>
         <div className={style.node_container}>
           <div className={style.node_img}>
-            <img className={style.node_img} src={props.src} alt="Node Icon" />
+            <img className={style.node_img} src={props.src} alt="Device Icon" />
           </div>
 
           <div className={style.nodedetails}>
             <div className={style.details}>
-              <span>{props.name}</span>
+              <span className={style.nodename}>{props.name}</span>
               <span className={`${style.statusnode} ${statusClass}`}>
                 <span>{props.status === "1" ? "Online" : "Offline"}</span>
               </span>

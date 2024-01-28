@@ -12,7 +12,6 @@
   background-color: #dadada;
   color: #000000;
 }
-
 .node_container {
   display: flex;
   justify-content: space-between;
@@ -30,7 +29,12 @@
   display: flex;
   flex-direction: column;
 }
-
+.nodename{
+  font-size: 16px;
+}
+.owner{
+  font-size: 16px;
+}
 .details {
   display: flex;
   flex-direction: column;

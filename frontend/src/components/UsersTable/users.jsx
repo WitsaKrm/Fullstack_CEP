@@ -1,5 +1,5 @@
 import React from "react";
-import {useState} from "react";
+import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -14,12 +14,16 @@ import PopAddUser from "../addusers/addusers";
 import PopUpdateUser from "../edituser/editUser";
 import ExportFile from "../../services/fileExport";
 import endpoint from "../../services/API/axios";
-
+import { FetchDevices } from "../../services/API/node.api";
 import { APIdataUsers, APIdeleteUser } from "../../services/API/user.api";
 import AppHeader from "../header/app-header";
+import { FetchDevicesByUid } from "../../services/API/node.api";
+import NodeBox from "../node/node";
+import svg from "../../assets/svg/svg";
 
 // const USERS_URL = "/user";
 const USERSDEL_URL = "/thisuser";
+const DEVICE_URL = `/devices`;
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -53,25 +57,121 @@ const UsersPage = (props) => {
   const [filterStatus, setFilterStatus] = useState("");
   const [selectedUserData, setSelectedUserData] = useState(null);
   const [expandedUserId, setExpandedUserId] = useState(null);
+  // const [devices, setDevices] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
+  const deviceByUid = async (SET, URL, UID) => {
+    try {
+      FetchDevicesByUid(SET, URL, UID);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setIsLoading(false);
+    }
+  };
 
   const handleAbout = (userID) => {
     setExpandedUserId((prevUserId) => (prevUserId === userID ? null : userID));
   };
-  function AccordionContent({ user }) {
+  function AccordionContent({ user, URL }) {
+    const [devices, setDevices] = useState([]);
+    const [hasFetched, setHasFetched] = useState(false);
     console.log(user);
     console.log(user.user_id);
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          if (!hasFetched) {
+            await FetchDevicesByUid(setDevices, URL, user.user_id);
+            setHasFetched(true);
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+      fetchData();
+    }, [ URL, user, hasFetched]);
+console.log(devices);
     return (
       <StyledTableRow>
         <StyledTableCell colSpan={8}>
           <div>
-            
+            <i
+              className={style.edit}
+              title="Edit Users"
+              onClick={() => handleEditOpen(user.user_id)}
+              data-toggle="tooltip"
+            >
+              <i className="material-icons">edit</i>
+              <span>แก้ไขข้อมูลผู้ใช้งาน</span>
+            </i>
+            <i
+              className={style.delete}
+              title="Delete Users"
+              onClick={() => handleDeleteUser(user.user_id)}
+              data-toggle="tooltip"
+            >
+              <i className="material-icons">delete</i>
+              <span>ลบผู้ใช้งาน</span>
+            </i>
             <h1>User ID: {user.user_id} </h1>
+            <div className={`container-fluid ${style.indexPageContainer}`}>
+              <div className="row">
+                {devices.map(
+                  (station) =>
+                    station.type === "station" && (
+                      <div className="col-md-3 col-sm-6" key={station.d_id}>
+                        <div className={`node d-flex ${style.nodeBox}`}>
+                          <NodeBox
+                            name={station.d_name.toUpperCase()}
+                            src={svg.station.default}
+                            status={station.status.toString()}
+                            // handleNodeClick={() =>
+                            //   handleNodeClick(
+                            //     station.user_id,
+                            //     "station",
+                            //     station.d_id,
+                            //     station.lat,
+                            //     station.lon
+                            //   )
+                            // }
+                          />
+                        </div>
+                      </div>
+                    )
+                )}
+              </div>
+              <div className="row">
+                {devices.map(
+                  (node) =>
+                    node.type === "node" && (
+                      <div className="col-md-3 col-sm-6" key={node.d_id}>
+                        <div className={`node d-flex ${style.nodeBox}`}>
+                          <NodeBox
+                            name={node.d_name.toUpperCase()}
+                            src={svg.node.default}
+                            status={node.status.toString()}
+                            // handleNodeClick={() =>
+                            //   handleNodeClick(
+                            //     node.user_id,
+                            //     node.type === "station" ? "station" : "senser",
+                            //     node.d_id,
+                            //     node.lat,
+                            //     node.lon
+                            //   )
+                            // }
+                          />
+                        </div>
+                      </div>
+                    )
+                )}
+              </div>
+            </div>
           </div>
         </StyledTableCell>
       </StyledTableRow>
     );
-  }  
+  }
   const handleEditOpen = (userID) => {
     console.log(userID);
     const selectedUser = users.find((user) => user.user_id === userID);
@@ -248,7 +348,7 @@ const UsersPage = (props) => {
               ) : (
                 filteredUsers.map((user, index) => (
                   <React.Fragment key={index}>
-                    <StyledTableRow >
+                    <StyledTableRow>
                       <StyledTableCell align="center">
                         <h5>{index + 1}</h5>
                       </StyledTableCell>
@@ -290,33 +390,17 @@ const UsersPage = (props) => {
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         <i
-                          className={style.edit}
-                          title="Edit Users"
-                          onClick={() => handleEditOpen(user.user_id)}
-                          data-toggle="tooltip"
-                        >
-                          <i className="material-icons">edit</i>
-                        </i>
-                        <i
-                          className={style.delete}
-                          title="Delete Users"
-                          onClick={() => handleDeleteUser(user.user_id)}
-                          data-toggle="tooltip"
-                        >
-                          <i className="material-icons">delete</i>
-                        </i>
-                        <i
-                          className={style.edit}
+                          className={style.more}
                           title="Edit"
                           onClick={() => handleAbout(user.user_id)}
                           data-toggle="tooltip"
                         >
-                          <i className="material-icons">edit</i>
+                          <i className="material-icons">more_horiz</i>
                         </i>
                       </StyledTableCell>
                     </StyledTableRow>
                     {expandedUserId === user.user_id && (
-                      <AccordionContent user={user} />
+                      <AccordionContent user={user} URL={DEVICE_URL} />
                     )}
                   </React.Fragment>
                 ))

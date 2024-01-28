@@ -28,13 +28,13 @@ th {
 }
 .add_users{
     color: rgb(62, 94, 201);
-    margin-right: 16px;
+    /* margin-right: 8px; */
     margin-top: 8px;
     cursor: pointer;
 }
 .exp_xcel{
     color: rgb(220, 231, 217);
-    margin-right: px;
+    /* margin-right: 8px; */
     margin-top: 8px;
     cursor: pointer;
 
@@ -47,6 +47,12 @@ th {
 }
 .delete{
     color: rgb(179, 17, 17);
+    margin-right: 8px;
+    cursor: pointer;
+
+}
+.more{
+    color:#000000;
     margin-right: 8px;
     cursor: pointer;
 
